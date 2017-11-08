@@ -1,0 +1,15 @@
+canvas {
+  border: 15px solid blue;
+}
+
+body {
+  background-image: image-url("space-bkgd.jpg");
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main {
+  margin-top: 200px;
+  background-color: inherit;
+  color: white;
+}
