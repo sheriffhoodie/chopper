@@ -1,8 +1,6 @@
-(see formatted version with wireframe image in the wiki)
-
 ## Background
 
-The Helicopter Game is a classic arcade game for 1 Player involving keeping a constantly falling and forward-progressing helicopter hovering through gaps in oncoming walls that appear in various heights and placements. The player simply uses the mouse to engage the hover: clicking and holding down will cause the helicopter to rise while lightly tapping at regular intervals will keep it hovering at the same altitude and letting it go will cause the helicopter to lose altitude.
+Chopper is a version of the classic Helicopter arcade game for 1 Player involving keeping a constantly falling and forward-progressing helicopter hovering through gaps in oncoming walls that appear in various heights and placements. The player simply uses the mouse to engage the hover: clicking and holding down will cause the helicopter to rise while lightly tapping at regular intervals will keep it hovering at the same altitude and letting it go will cause the helicopter to lose altitude.
 
 There is no "end" to the game, your distance is tracked as you fly forward and is given to you as your score when you (eventually) crash the helicopter.
 
