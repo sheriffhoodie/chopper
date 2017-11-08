@@ -18,15 +18,15 @@ There will also be:
 * an about modal describing game objective and controls
 * a production ReadMe
 
-## Architecture and Technologies (***TBD)
+## Architecture and Technologies (TBD)
 
 The game will use vanilla Javascript with HTML, CSS, and Canvas for rendering.
 
 The main entry file will hold all logic for gameplay, leaving the canvas structure and styling to separate HTML and CSS files.
 
 ## Wireframes
+![wireframe](https://github.com/sheriffhoodie/helicopter/blob/master/images/New_JS_mockup.png)
 
-wireframe
 
 ## Implementation Timeline
 
