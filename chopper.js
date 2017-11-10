@@ -2,22 +2,89 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector("canvas");
   const ctx = canvas.getContext('2d');
 
-  // Variable that may change during gameplay
+  // Variable this may change during gameplay
   let gameState = "play";
   let chopper;
+  var chopperImage = new Image();
+  chopperImage.src = "images/helicopter-spritesheet.png";
   let score;
   var flying = false;
-  let startFlyRate = 1;
-  let startDescRate = 200;
+  let startFlyRate = 4;
+  let startDescRate = 6;
   let flyRate;
   let descRate;
-  let lift = .08;
-  let gravity = 1;
-  let termVel = 5;
-  // const width = 300;
-  // const height = 200;
-  // let x = 200;
-  // let y = 100;
+  let lift = 1;
+  let gravity = 1.5;
+  let termVel = 10;
+
+  	function gameLoop () {
+
+  	  window.requestAnimationFrame(gameLoop);
+
+  	  chopper.update();
+  	  chopper.render();
+  	}
+
+  	function sprite (options) {
+
+  		var obj = {},
+  			frameIndex = 0,
+  			tickCount = 0,
+  			ticksPerFrame = options.ticksPerFrame || 0,
+  			numberOfFrames = options.numberOfFrames || 1;
+
+  		sprite.context = options.context;
+  		sprite.width = options.width;
+  		sprite.height = options.height;
+  		sprite.image = options.image;
+
+  		sprite.update = function () {
+
+              tickCount += 1;
+
+              if (tickCount > ticksPerFrame) {
+
+  				tickCount = 0;
+
+                  // If the current frame index is in range
+                  if (frameIndex < numberOfFrames - 1) {
+                      // Go to the next frame
+                      frameIndex += 1;
+                  } else {
+                      frameIndex = 0;
+                  }
+              }
+          };
+
+  		sprite.render = function () {
+
+  		  // Clear the canvas
+  		  ctx.clearRect(0, 0, sprite.width, sprite.height);
+
+  		  // Draw the animation
+  		  sprite.ctx.drawImage(
+  		    sprite.image,
+  		    frameIndex * sprite.width / numberOfFrames,
+  		    0,
+  		    sprite.width / numberOfFrames,
+  		    sprite.height,
+  		    0,
+  		    0,
+  		    sprite.width / numberOfFrames,
+  		    sprite.height);
+  		};
+
+  		return sprite;
+  	}
+
+chopper = sprite({
+  context: canvas.getContext("2d"),
+  width: 200,
+  height: 100,
+  image: chopperImage,
+  numberOfFrames: 4,
+  ticksPerFrame: 4
+});
 
   function setup() {
     // gameState = "pause";
@@ -60,14 +127,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function gameStart() {
     console.log("i am game start");
-    debugger
+    // debugger
     if (gameState === "play") {
       chopper = new Chopper(200, 150, 30, 'red');
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // flying = true;
       chopper.drawChopper();
       chopper.fly();
-      // window.requestAnimationFrame(gameStart, canvas);
     }
   }
 
@@ -79,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     this.drawChopper = function () {
       console.log("i am drawChopper");
-      debugger
+      // debugger
       if (gameState === "play") {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
@@ -90,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     this.fly = function() {
-      debugger
+      // debugger
       console.log("i am fly");
       if(flying) {
         flyRate = startFlyRate;
@@ -100,14 +165,23 @@ document.addEventListener("DOMContentLoaded", () => {
             flyRate += lift;
         }
     } else {
-      descRate = startDescRate;
+        descRate = startDescRate;
         this.y = this.y + descRate;
 
         if(!(descRate > termVel)) {
-            descRate += gravity;
+          descRate += gravity;
         }
     }
     // this.drawChopper();
+  };
+
+  this.update = function() {
+    this.fly();
+  };
+
+  this.render = function() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.drawChopper();
   };
 
     // this.update = function() {
@@ -158,28 +232,16 @@ document.addEventListener("DOMContentLoaded", () => {
     elapsedTime = endTime - startTime;
     if (elapsedTime > FPSInterval) {
       startTime = endTime - (elapsedTime - FPSInterval);
-      // if (gameState !== "pause") {
-      //   gameStart();
-      //   // chopper.update();
-      // }
+      if (gameState !== "pause") {
+        chopper.update();
+        chopper.render();
+      }
     }
   }
   gameStart();
   startAnimation(30);
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
