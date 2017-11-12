@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const ctx = canvas.getContext('2d');
 
   // Variable this may change during gameplay
-  let gameState = "play";
+  let gameState;
   var chopper = new Image ();
-  chopper.src = "images/Superman-PNG-Pic.png";
-  let chopperWidth = 150;
-  let chopperHeight = 250;
+  chopper.src = "images/Helicopter2.png";
+  let chopperWidth = 200;
+  let chopperHeight = 100;
   let chopperXPos;
   let chopperYPos;
   // var chopperImage = new Image();
@@ -137,12 +137,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function gameStart() {
     console.log("i am game start");
     // debugger
-    if (gameState === "play") {
       // chopper = new Chopper(100, 200);
+      gameState = "pause";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawChopper();
       fly();
-    }
   }
 
     // this.x = x;
