@@ -49,8 +49,16 @@ body {
 
 .main {
   font-family: inherit;
-  margin-top: 120px;
+  margin-top: 30px;
   margin-bottom: 200px;
   background-color: inherit;
   color: white;
+}
+
+.main-body {
+  margin-top: 50px;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  color: white;
+  font-size: 16px;
 }
