@@ -16,9 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   var bgHeight = 500;
   var bgWidth = 1170;
-  var bgVelocity = 100;
+  var bgVelocity = 30;
   var background = new Image ();
-  background.src = "images/samplebg.png";
+  background.src = "images/space-bkgd.jpg";
   let scrollSpeed;
 
   let score;
@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     score = 0;
     chopperXPos = 75;
     chopperYPos = 100;
+    scrollSpeed = 0;
     ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
     ctx.drawImage(background, 0, 0, bgWidth, bgHeight);
     ctx.fillStyle = "rgb(255,255,255)";
@@ -161,6 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
     function drawBackground () {
+      console.log("i am drawing the bg");
       if (scrollSpeed >= canvas.width) {
         scrollSpeed = 0;
       }
