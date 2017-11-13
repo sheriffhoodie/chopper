@@ -2,16 +2,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector("canvas");
   const ctx = canvas.getContext('2d');
 
-  // Variable this may change during gameplay
+  // Variables that may change during gameplay
   let gameState;
+
   var chopper = new Image ();
-  chopper.src = "images/Helicopter2.png";
-  let chopperWidth = 200;
-  let chopperHeight = 100;
+  chopper.src = "images/helicopter5.png";
+  let chopperWidth = 225;
+  let chopperHeight = 75;
   let chopperXPos;
   let chopperYPos;
   // var chopperImage = new Image();
   // chopperImage.src = "images/helicopter-spritesheet.png";
+
+  var bgHeight = 500;
+  var bgWidth = 1170;
+  var bgVelocity = 100;
+  var background = new Image ();
+  background.src = "images/samplebg.png";
+  let scrollSpeed;
+
   let score;
   var flying = false;
   let startFlyRate = 4;
@@ -94,9 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function setup() {
     // gameState = "pause";
     score = 0;
-    chopperXPos = 400;
-    chopperYPos = 300;
+    chopperXPos = 75;
+    chopperYPos = 100;
     ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
+    ctx.drawImage(background, 0, 0, bgWidth, bgHeight);
+    ctx.fillStyle = "rgb(255,255,255)";
+    ctx.fillText('Press spacebar to play/pause', 350, 600);
   }
 
   window.onload = function() {
@@ -122,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //play/pause with spacebar
   document.addEventListener("keypress", (event) => {
-    console.log(gameState);
+    // console.log(gameState);
     if (event.keyCode === 32) {
       if (gameState === "pause") {
         play();
@@ -135,22 +147,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   function gameStart() {
-    console.log("i am game start");
+    // console.log("i am game start");
     // debugger
       // chopper = new Chopper(100, 200);
       gameState = "pause";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBackground();
       drawChopper();
       fly();
+      ctx.font = "18 helvetica";
+      ctx.fillStyle = "white";
+      ctx.fillText('Press spacebar to play/pause', 350, 600);
   }
 
-    // this.x = x;
-    // this.y = y;
-    // this.radius = radius;
-    // this.color = color;
+    function drawBackground () {
+      if (scrollSpeed >= canvas.width) {
+        scrollSpeed = 0;
+      }
+      scrollSpeed += bgVelocity;
+      ctx.drawImage(background, -scrollSpeed, 0, bgWidth, bgHeight);
+      ctx.drawImage(background, canvas.width - scrollSpeed, 0, bgWidth, bgHeight);
+    }
 
     function drawChopper () {
-      console.log("i am drawChopper");
+      // console.log("i am drawChopper");
       // debugger
       if (gameState === "play") {
         ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
@@ -164,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function fly () {
       // debugger
-      console.log("i am fly");
+      // console.log("i am fly");
       if(flying) {
         flyRate = startFlyRate;
         chopperYPos = chopperYPos - flyRate;
@@ -189,11 +209,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function render () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBackground();
     drawChopper();
   }
 
   document.addEventListener('keydown', (event) => {
-    console.log("i am flying - keydown");
+    // console.log("i am flying - keydown");
     if (event.keyCode === 87) {
       flying = true;
     }
@@ -201,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener('keyup', (event) => {
-    console.log("i am not flying - keyup");
+    // console.log("i am not flying - keyup");
     if (event.keyCode === 87) {
       flying = false;
     }
