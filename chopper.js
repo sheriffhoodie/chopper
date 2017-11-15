@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let gameState;
   let gameOver;
+  let currentFrame = 0;
+
 
   var chopper = new Image ();
   chopper.src = "images/helicopter5.png";
@@ -97,8 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.font = '30px Orbitron';
     ctx.fillStyle = 'white';
     ctx.fillText('Press space bar to start', 380, 250);
-    // ctx.font = '30px Orbitron';
-    // ctx.fillText('press cmd + r to restart', 585-292/2, 320);
+    ctx.font = '30px Orbitron';
+    ctx.fillText('Use "F" key to fly', 585-292/2, 320);
   }
 
   //play/pause with spacebar
@@ -144,10 +146,47 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.drawImage(background, canvas.width - scrollX, 0, bgWidth, bgHeight);
   }
 
+  function SpriteSheet () {
+    let path = 'images/helicopter-spritesheet.png';
+    let frameWidth = 423;
+    let frameHeight = 150;
+    let frameSpeed = 3;
+    let endFrame = 3;
+    let image = new Image ();
+    let counter = 0;
+    image.src = path;
+    let framesPerRow;
+    framesPerRow = Math.floor(image.width / frameWidth);
+
+
+    this.update = function () {
+      // if (counter === (frameSpeed - 1))
+      // console.log("HEREHEREHERE");
+        currentFrame = (currentFrame + 1) % endFrame;
+        // counter = (counter +  1) % frameSpeed;
+    };
+
+    this.draw = function (x, y) {
+      // console.log("spritesheet drawing");
+      let row = Math.floor(currentFrame / framesPerRow);
+      let col = Math.floor(currentFrame % framesPerRow);
+      ctx.drawImage(
+        image,
+        col * frameWidth, row * frameHeight,
+        frameWidth, frameHeight, x, y,
+        208, 62);
+    };
+    let self = this;
+  }
+
   function drawChopper () {
-    // console.log("i am drawChopper");
+    console.log("i am drawing the chopper");
+    let spritesheet = new SpriteSheet();
+    // // console.log("i am drawChopper");
     if (gameState === "play") {
-      ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
+      spritesheet.update();
+      spritesheet.draw(chopperXPos, chopperYPos);
+      // ctx.drawIma`ge(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
     }
   }
 
@@ -183,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (chopperXPos < (wallList[i].x + wallWidth) &&
       (chopperXPos + chopperWidth) > wallList[i].x && chopperYPos < (wallList[i].y + wallHeight) &&
       (chopperYPos + chopperHeight) > wallList[i].y ) {
-          console.log("hit");
+          // console.log("hit");
           crash = true;
           gameOver = true;
           endGame();
@@ -207,8 +246,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function difficultyCheck (score) {
-    console.log(score);
+  function difficultyCheck () {
+    // console.log(score);
     //move to Level 2
     // debugger
     if (score === 100) {
@@ -226,12 +265,15 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (score === 400) {
       wallVelocity += 3;
       wallInterval -= 6;
+      //Level 6
     } else if (score === 510) {
       wallVelocity += 6;
       wallInterval -= 5;
     }
   }
 
+  //simplify equation with vertical velocity that decreases proportionately
+  //and then increases upward velocity with accelaration, curving the flying
   function fly () {
     // console.log("i am fly");
     if(flying && crash === false) {
@@ -252,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function explodeChopper() {
-    console.log("i am exploding chopper");
+    // console.log("i am exploding chopper");
     // debugger
     if (crash === true) {
       chopper.src = "images/explosion1.png";
@@ -263,7 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function endGame() {
-    console.log("i am ending game");
+    // console.log("i am ending game");
     if (gameOver === true) {
       pause();
       explodeChopper();
@@ -277,13 +319,13 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.fillText('GAME OVER', 439, 230);
     ctx.font = "30px Orbitron";
     ctx.fillStyle = "blue";
-    ctx.fillText('Your Score: '+ score, 490, 290);
+    ctx.fillText('Your Score: '+ score, 482, 290);
     ctx.fillStyle = "white";
     ctx.font = '30px Orbitron';
     ctx.fillText('press cmd + r to restart', 417, 350);
   }
 
-  function formatScore (score) {
+  function formatScore () {
   if (score > 99999) {
     return '99999';
   } else if (score > 9999) {
@@ -302,7 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function update () {
     borderCrashCheck();
     collisionCheck();
-    difficultyCheck();
+    // difficultyCheck();
     fly();
   }
 
@@ -331,7 +373,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // event.preventDefault();
   });
-
 
   let startTime;
   let endTime;
