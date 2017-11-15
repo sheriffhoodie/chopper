@@ -3,15 +3,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const ctx = canvas.getContext('2d');
 
   let gameState;
+  let gameOver;
 
   var chopper = new Image ();
   chopper.src = "images/helicopter5.png";
-  let chopperWidth = 225;
-  let chopperHeight = 75;
+  let chopperWidth = 220;
+  let chopperHeight = 74;
   let chopperXPos;
   let chopperYPos;
   // var chopperImage = new Image();
   // chopperImage.src = "images/helicopter-spritesheet.png";
+
+  //Chopper Collision Box
+  let chopperBox = {};
+  chopperBox.mid = {};
+  chopperBox.mid.x = chopperWidth / 2;
+  chopperBox.mid.y = chopperHeight / 2;
+  chopperBox.right = chopperBox.mid.x + chopperWidth / 2;
+  chopperBox.left = chopperBox.mid.x - chopperWidth / 2;
+  chopperBox.top = chopperBox.mid.y - chopperHeight / 2;
+  chopperBox.bottom = chopperBox.mid.y + chopperHeight / 2;
 
   var bgHeight = 500;
   var bgWidth = 1170;
@@ -20,34 +31,46 @@ document.addEventListener("DOMContentLoaded", () => {
   background.src = "images/space-bkgd.jpg";
   let scrollX;
 
+  let wall;
+  let wallList;
+  let wallCount;
+  var wallHeight = 130;
+  var wallWidth = 40;
+  var wallVelocity = 11;
+  var wallInterval = 50;
+
   let score;
-  let borderCrash;
+  let crash;
   var flying = false;
-  let startFlyRate = 4;
-  let startDescRate = 6;
+  let startFlyRate = 7;
+  let startDescRate = 9;
   let flyRate;
   let descRate;
-  let lift = 1;
-  let gravity = 1.5;
-  let termVel = 10;
+  let lift = 1.8;
+  let gravity = 2.2;
+  let termVel = 15;
 
   function setup() {
+    gameOver = false;
     score = 0;
     chopperXPos = 75;
     chopperYPos = 100;
     scrollX = 0;
-    borderCrash = 0;
+    crash = false;
+    wallList = new Array();
+    wallCount = 0;
+    addWall();
     ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
     ctx.drawImage(background, 0, 0, bgWidth, bgHeight);
   }
 
   window.onload = function() {
-  setup();
-};
+    setup();
+  };
 
   // Game State Modes
   function clear() {
-    console.log("i am clearing");
+    // console.log("i am clearing");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
@@ -69,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
     gameStart();
   }
 
-
   //play/pause with spacebar
   document.addEventListener("keypress", (event) => {
     // console.log(gameState);
@@ -84,13 +106,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("keypress", (event) => {
-    console.log("i am restarting");
+    // console.log("i am restarting");
     if (event.keyCode === 82) {
       restart();
     }
     // event.preventDefault();
   });
-
 
   function gameStart() {
   // console.log("i am game start");
@@ -98,7 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
     clear();
     drawBackground();
     drawChopper();
+    wallList = new Array();
+    drawWalls();
     fly();
+    ctx.fillStyle = "brown";
   }
 
   function drawBackground () {
@@ -118,43 +142,112 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function addWall() {
+    // console.log("i am adding wall");
+    let newWall = {};
+    newWall.x = canvas.width;
+    newWall.y = Math.floor(Math.random() * canvas.height - wallHeight);
+    wallList.push(newWall);
+  }
+
+  function drawWalls () {
+    wallCount++;
+    for (var i = 0; i < wallList.length; i++) {
+      if (wallList[i].x < 0 - wallWidth) {
+        wallList.splice(i, 1);
+      } else {
+        wallList[i].x -= wallVelocity;
+        ctx.fillStyle = "gray";
+        ctx.fillRect(wallList[i].x, wallList[i].y, wallWidth, wallHeight);
+
+        if (wallCount >= wallInterval) {
+          addWall();
+          wallCount = 0;
+          score += 10;
+        }
+      }
+    }
+  }
+
+  function collisionCheck() {
+    for (var i = 0; i < wallList.length; i++) {
+      if (chopperXPos < (wallList[i].x + wallWidth) &&
+      (chopperXPos + chopperWidth) > wallList[i].x && chopperYPos < (wallList[i].y + wallHeight) &&
+      (chopperYPos + chopperHeight) > wallList[i].y ) {
+          console.log("hit");
+          crash = true;
+          gameOver = true;
+          endGame();
+        }
+      // if (chopperHeight < wallList[i].top ||
+  		// (chopperYPos - chopperHeight > wallList[i].bottom) ||
+  		// (chopperXPos > wallList[i].right) ||
+  		// (chopperXPos + chopperWidth < wallList[i].left)) {
+      //   console.log("hit");
+      // }
+      }
+    }
+
   function borderCrashCheck() {
     if (flying) {
       if (chopperYPos <= 0) {
-        borderCrash = true;
-        gameState = "pause";
-        restart();
+        crash = true;
+        gameOver = true;
+        endGame();
       }
     } else {
       if (chopperYPos + chopperHeight > canvas.height) {
-        borderCrash = true;
-        gameState = "pause";
-        restart();
+        crash = true;
+        gameOver = true;
+        endGame();
       }
     }
   }
 
   function fly () {
     // console.log("i am fly");
-    if(flying) {
+    if(flying && crash === false) {
       flyRate = startFlyRate;
       chopperYPos = chopperYPos - flyRate;
 
       if(flyRate < termVel) {
           flyRate += lift;
       }
-    } else {
+    } else if (!flying && crash === false) {
       descRate = startDescRate;
       chopperYPos = chopperYPos + descRate;
 
-      if(!(descRate > termVel)) {
+      if(descRate < termVel) {
         descRate += gravity;
       }
     }
   }
 
+  function explodeChopper() {
+    console.log("i am exploding chopper");
+    // debugger
+    if (crash === true) {
+      chopper.src = "images/explosion1.png";
+      chopperHeight = 350;
+      chopperWidth = 350;
+      setTimeout(function () {ctx.drawImage(chopper, chopperXPos - chopperWidth/4, chopperYPos - chopperHeight/2, chopperWidth, chopperHeight);}, 50);
+      ctx.font = "40px Bold Verdana";
+      ctx.fillText("YOU LOSE!", 100, 100);
+    }
+  }
+
+  function endGame() {
+    console.log("i am ending game");
+    if (gameOver === true) {
+      pause();
+      explodeChopper();
+
+    }
+  }
+
   function update () {
     borderCrashCheck();
+    collisionCheck();
     fly();
   }
 
@@ -162,6 +255,10 @@ document.addEventListener("DOMContentLoaded", () => {
     clear();
     drawBackground();
     drawChopper();
+    drawWalls();
+    ctx.fillStyle = "white";
+    ctx.font = "30px helvetica";
+    ctx.fillText('Score: '+ score, 1000, 50);
   }
 
   document.addEventListener('keydown', (event) => {
