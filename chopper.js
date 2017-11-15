@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   var chopper = new Image ();
   chopper.src = "images/helicopter5.png";
-  let chopperWidth = 220;
-  let chopperHeight = 74;
+  let chopperWidth = 208;
+  let chopperHeight = 62;
   let chopperXPos;
   let chopperYPos;
   // var chopperImage = new Image();
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   var wallVelocity = 11;
   var wallInterval = 50;
 
-  let score;
+  let score = 0;
   let crash;
   var flying = false;
   let startFlyRate = 7;
@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.onload = function() {
     setup();
+    setTimeout(function () {showIntro();}, 30);
   };
 
   // Game State Modes
@@ -93,7 +94,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showIntro () {
-
+    ctx.font = '30px Orbitron';
+    ctx.fillStyle = 'white';
+    ctx.fillText('Press space bar to start', 380, 250);
+    // ctx.font = '30px Orbitron';
+    // ctx.fillText('press cmd + r to restart', 585-292/2, 320);
   }
 
   //play/pause with spacebar
@@ -202,6 +207,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function difficultyCheck (score) {
+    console.log(score);
+    //move to Level 2
+    // debugger
+    if (score === 100) {
+      wallVelocity += 20;
+      wallInterval -= 33;
+      //Level 3
+    } else if (score === 220) {
+      wallVelocity += 3;
+      wallInterval -= 5;
+      //Level 4
+    } else if (score === 300) {
+      wallVelocity += 4;
+      wallInterval -= 6;
+      //Level 5
+    } else if (score === 400) {
+      wallVelocity += 3;
+      wallInterval -= 6;
+    } else if (score === 510) {
+      wallVelocity += 6;
+      wallInterval -= 5;
+    }
+  }
+
   function fly () {
     // console.log("i am fly");
     if(flying && crash === false) {
@@ -237,8 +267,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (gameOver === true) {
       pause();
       explodeChopper();
-      setTimeout(function () {renderGameOverScreen();}, 30);
+      setTimeout(function () {renderGameOver();}, 30);
     }
+  }
+
+  function renderGameOver () {
+    ctx.font = '48px Orbitron';
+    ctx.fillStyle = 'white';
+    ctx.fillText('GAME OVER', 439, 230);
+    ctx.font = "30px Orbitron";
+    ctx.fillStyle = "blue";
+    ctx.fillText('Your Score: '+ score, 490, 290);
+    ctx.fillStyle = "white";
+    ctx.font = '30px Orbitron';
+    ctx.fillText('press cmd + r to restart', 417, 350);
   }
 
   function formatScore (score) {
@@ -260,6 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function update () {
     borderCrashCheck();
     collisionCheck();
+    difficultyCheck();
     fly();
   }
 
@@ -289,17 +332,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // event.preventDefault();
   });
 
-  function renderGameOverScreen () {
-  ctx.font = '48px Orbitron';
-  ctx.fillStyle = 'white';
-  ctx.fillText('GAME OVER', 585-292/2, 230);
-  ctx.font = "30px Orbitron";
-  ctx.fillStyle = "blue";
-  ctx.fillText('Your Score: '+ score, 490, 290);
-  ctx.fillStyle = "white";
-  ctx.font = '30px Orbitron';
-  ctx.fillText('press cmd + r to restart', 417, 350);
-}
 
   let startTime;
   let endTime;
