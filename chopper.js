@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   var bgHeight = 500;
   var bgWidth = 1170;
-  var bgVelocity = 30;
+  var bgVelocity = 25;
   var background = new Image ();
   background.src = "images/space-bkgd.jpg";
   let scrollX;
@@ -92,6 +92,10 @@ document.addEventListener("DOMContentLoaded", () => {
     gameStart();
   }
 
+  function showIntro () {
+
+  }
+
   //play/pause with spacebar
   document.addEventListener("keypress", (event) => {
     // console.log(gameState);
@@ -122,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     wallList = new Array();
     drawWalls();
     fly();
-    ctx.fillStyle = "brown";
+    // ctx.fillStyle = "brown";
   }
 
   function drawBackground () {
@@ -179,12 +183,6 @@ document.addEventListener("DOMContentLoaded", () => {
           gameOver = true;
           endGame();
         }
-      // if (chopperHeight < wallList[i].top ||
-  		// (chopperYPos - chopperHeight > wallList[i].bottom) ||
-  		// (chopperXPos > wallList[i].right) ||
-  		// (chopperXPos + chopperWidth < wallList[i].left)) {
-      //   console.log("hit");
-      // }
       }
     }
 
@@ -230,9 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
       chopper.src = "images/explosion1.png";
       chopperHeight = 350;
       chopperWidth = 350;
-      setTimeout(function () {ctx.drawImage(chopper, chopperXPos - chopperWidth/4, chopperYPos - chopperHeight/2, chopperWidth, chopperHeight);}, 50);
-      ctx.font = "40px Bold Verdana";
-      ctx.fillText("YOU LOSE!", 100, 100);
+      setTimeout(function () {ctx.drawImage(chopper, chopperXPos - chopperWidth/4, chopperYPos - chopperHeight/2, chopperWidth, chopperHeight);}, 29);
     }
   }
 
@@ -241,9 +237,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (gameOver === true) {
       pause();
       explodeChopper();
-
+      setTimeout(function () {renderGameOverScreen();}, 30);
     }
   }
+
+  function formatScore (score) {
+  if (score > 99999) {
+    return '99999';
+  } else if (score > 9999) {
+    return score;
+  } else if (score > 999) {
+    return '0' + score;
+  } else if (score > 99) {
+    return '00' + score;
+  } else if (score > 9) {
+    return '000' + score;
+  } else {
+    return '0000' + score;
+  }
+}
 
   function update () {
     borderCrashCheck();
@@ -257,13 +269,13 @@ document.addEventListener("DOMContentLoaded", () => {
     drawChopper();
     drawWalls();
     ctx.fillStyle = "white";
-    ctx.font = "30px helvetica";
-    ctx.fillText('Score: '+ score, 1000, 50);
+    ctx.font = "30px Orbitron";
+    ctx.fillText('Score: '+ formatScore(score), 900, 50);
   }
 
   document.addEventListener('keydown', (event) => {
     // console.log("i am flying - keydown");
-    if (event.keyCode === 87) {
+    if (event.keyCode === 70) {
       flying = true;
     }
     // event.preventDefault();
@@ -271,11 +283,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener('keyup', (event) => {
     // console.log("i am not flying - keyup");
-    if (event.keyCode === 87) {
+    if (event.keyCode === 70) {
       flying = false;
     }
     // event.preventDefault();
   });
+
+  function renderGameOverScreen () {
+  ctx.font = '48px Orbitron';
+  ctx.fillStyle = 'white';
+  ctx.fillText('GAME OVER', 585-292/2, 230);
+  ctx.font = "30px Orbitron";
+  ctx.fillStyle = "blue";
+  ctx.fillText('Your Score: '+ score, 490, 290);
+  ctx.fillStyle = "white";
+  ctx.font = '30px Orbitron';
+  ctx.fillText('press cmd + r to restart', 417, 350);
+}
 
   let startTime;
   let endTime;
@@ -300,6 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
+
   gameStart();
   startAnimation(30);
 
