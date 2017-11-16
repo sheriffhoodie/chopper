@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameState;
   let gameOver;
   let currentFrame = 0;
+  // let score;
 
 
   var chopper = new Image ();
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   var wallVelocity = 11;
   var wallInterval = 50;
 
-  let score = 0;
+  score = 0;
   let crash;
   var flying = false;
   let startFlyRate = 7;
@@ -205,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
         wallList.splice(i, 1);
       } else {
         wallList[i].x -= wallVelocity;
-        ctx.fillStyle = "gray";
+        ctx.fillStyle = "brown";
         ctx.fillRect(wallList[i].x, wallList[i].y, wallWidth, wallHeight);
 
         if (wallCount >= wallInterval) {
@@ -247,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function difficultyCheck () {
-    // console.log(score);
+    console.log(score);
     //move to Level 2
     // debugger
     if (score === 100) {
@@ -344,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function update () {
     borderCrashCheck();
     collisionCheck();
-    // difficultyCheck();
+    difficultyCheck();
     fly();
   }
 
