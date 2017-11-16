@@ -5,6 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameState;
   let gameOver;
   let currentFrame = 0;
+  let pauseStart;
+  let pauseTotal;
+  let startTime;
+  let endTime;
+  let FPSInterval;
+  let elapsedTime;
   // let score;
 
 
@@ -17,19 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // var chopperImage = new Image();
   // chopperImage.src = "images/helicopter-spritesheet.png";
 
-  //Chopper Collision Box
-  let chopperBox = {};
-  chopperBox.mid = {};
-  chopperBox.mid.x = chopperWidth / 2;
-  chopperBox.mid.y = chopperHeight / 2;
-  chopperBox.right = chopperBox.mid.x + chopperWidth / 2;
-  chopperBox.left = chopperBox.mid.x - chopperWidth / 2;
-  chopperBox.top = chopperBox.mid.y - chopperHeight / 2;
-  chopperBox.bottom = chopperBox.mid.y + chopperHeight / 2;
-
   var bgHeight = 500;
   var bgWidth = 1170;
-  var bgVelocity = 25;
+  var bgVelocity = 18;
   var background = new Image ();
   background.src = "images/space-bkgd.jpg";
   let scrollX;
@@ -39,21 +35,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let wallCount;
   var wallHeight = 130;
   var wallWidth = 40;
-  var wallVelocity = 11;
-  var wallInterval = 50;
+  var wallVelocity = 7;
+  var wallInterval = 90;
 
-  score = 0;
+  let score;
   let crash;
   var flying = false;
-  let startFlyRate = 7;
-  let startDescRate = 9;
+  let startFlyRate = 4;
+  let startDescRate = 5;
   let flyRate;
   let descRate;
-  let lift = 1.8;
-  let gravity = 2.2;
-  let termVel = 15;
+  let lift = 0.8;
+  let gravity = 1.2;
+  let termVel = 10;
 
   function setup() {
+    pauseTotal = 0;
     gameOver = false;
     score = 0;
     chopperXPos = 75;
@@ -79,14 +76,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function play() {
+    if (!startTime) {
+      startTime = Date.now();
+    }
     if (gameState === "pause") {
       gameState = "play";
+      if (pauseStart) {
+        pauseTotal += Date.now() - pauseStart;
+      }
     }
   }
 
   function pause() {
     if (gameState === "play") {
       gameState = "pause";
+      pauseStart = Date.now();
     }
   }
 
@@ -106,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //play/pause with spacebar
   document.addEventListener("keypress", (event) => {
-    // console.log(gameState);
     if (event.keyCode === 32) {
       if (gameState === "pause") {
         play();
@@ -134,11 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
     wallList = new Array();
     drawWalls();
     fly();
-    // ctx.fillStyle = "brown";
   }
 
   function drawBackground () {
-    // console.log("i am drawing the bg");
     if (scrollX >= canvas.width) {
       scrollX = 0;
     }
@@ -187,7 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (gameState === "play") {
       spritesheet.update();
       spritesheet.draw(chopperXPos, chopperYPos);
-      // ctx.drawIma`ge(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
+      // ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
     }
   }
 
@@ -212,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (wallCount >= wallInterval) {
           addWall();
           wallCount = 0;
-          score += 10;
+          // score += 10;
         }
       }
     }
@@ -247,13 +248,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function increaseScore() {
+    console.log("i am increasing the score");
+    endTime = Date.now();
+    elapsedTime = endTime - startTime;
+    score = Math.floor((endTime - startTime - pauseTotal) / 300);
+  }
+
   function difficultyCheck () {
     console.log(score);
     //move to Level 2
     // debugger
     if (score === 100) {
-      wallVelocity += 20;
-      wallInterval -= 33;
+      wallVelocity += 2;
+      wallInterval -= 2;
       //Level 3
     } else if (score === 220) {
       wallVelocity += 3;
@@ -295,8 +303,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function explodeChopper() {
-    // console.log("i am exploding chopper");
-    // debugger
     if (crash === true) {
       chopper.src = "images/explosion1.png";
       chopperHeight = 350;
@@ -343,6 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 
   function update () {
+    increaseScore();
     borderCrashCheck();
     collisionCheck();
     difficultyCheck();
@@ -375,29 +382,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // event.preventDefault();
   });
 
-  let startTime;
-  let endTime;
-  let FPSInterval;
-  let elapsedTime;
-
   function startAnimation(FPS) {
     FPSInterval = 1000/FPS;
-    startTime = Date.now();
     animate();
   }
 
   function animate() {
     requestAnimationFrame(animate);
-    endTime = Date.now();
-    elapsedTime = endTime - startTime;
-    if (elapsedTime > FPSInterval) {
-      startTime = endTime - (elapsedTime - FPSInterval);
       if (gameState !== "pause") {
         update();
         render();
       }
     }
-  }
 
   gameStart();
   startAnimation(30);
