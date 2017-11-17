@@ -9,19 +9,19 @@
     <script src="soundmanager2/script/soundmanager2.js"></script>
     <script src="soundmanager2/script/soundmanager2.js"></script>
     <script>
-      // soundManager.setup({
-      //   url: 'soundmanager2/swf/',
-      //   onready: function() {
-      //     var mySound = soundManager.createSound({
-      //       id: 'aSound',
-      //       url: 'sounds/helicopter.mp3'
-      //     });
-      //     mySound.play();
-      //   },
-      //   ontimeout: function() {
-      //     // Hrmm, SM2 could not start. Missing SWF? Flash blocked? Show an error, etc.?
-      //   }
-      // });
+      soundManager.setup({
+        url: 'soundmanager2/swf/',
+        onready: function() {
+          var mySound = soundManager.createSound({
+            id: 'aSound',
+            url: 'sounds/helicopter.mp3'
+          });
+          mySound.play;
+        },
+        ontimeout: function() {
+          // Hrmm, SM2 could not start. Missing SWF? Flash blocked? Show an error, etc.?
+        }
+      });
     </script>
     <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
   </head>
@@ -39,7 +39,7 @@
       </header>
     </div>
     <div class="main-body">
-      <p class="instructions">High Score: 1450 (Hanhee)</p>
+      <p class="instructions"></p>
       <div class="body">
         <div class="main">
           <h1>SPACE CHOPPER</h1>

@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector("canvas");
   const ctx = canvas.getContext('2d');
 
+  //Global Variables
   let gameState;
   let gameOver;
   let currentFrame = 0;
@@ -27,11 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
   background.src = "images/space-bkgd.jpg";
   let scrollX;
 
-  let wall;
+  var wall = new Image ();
+  wall.src = "images/asteroid2.png";
   let wallList;
   let wallCount;
-  var wallHeight = 130;
-  var wallWidth = 40;
+  let wallHeight;
+  let wallWidth;
   let wallVelocity;
   let wallInterval;
 
@@ -47,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let termVel = 10;
 
   function setup() {
-    // debugger
     pauseTotal = 0;
     gameOver = false;
     score = 0;
@@ -100,9 +101,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function showIntro () {
     ctx.font = '30px Orbitron';
     ctx.fillStyle = 'white';
-    ctx.fillText('Press space bar to start', 380, 250);
+    ctx.fillText('Press space bar to start', 380, 220);
     ctx.font = '30px Orbitron';
-    ctx.fillText('Use "F" key to fly', 585-292/2, 320);
+    ctx.fillText('Use "F" key to fly', 585-292/2, 280);
+    ctx.font = '22px Orbitron';
+    ctx.fillStyle = 'orange';
+    ctx.fillText('Avoid asteroids and the top and bottom of the frame!', 270, 360);
   }
 
   //play/pause with spacebar
@@ -115,6 +119,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     event.preventDefault();
+    if (gameOver === true) {
+      // restart();
+    }
   });
 
   document.addEventListener("keypress", (event) => {
@@ -180,9 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function drawChopper () {
-    console.log("i am drawing the chopper");
     let spritesheet = new SpriteSheet();
-    // // console.log("i am drawChopper");
     if (gameState === "play") {
       spritesheet.update();
       spritesheet.draw(chopperXPos, chopperYPos);
@@ -195,6 +200,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let newWall = {};
     newWall.x = canvas.width;
     newWall.y = Math.floor(Math.random() * canvas.height - wallHeight);
+    wallWidth = Math.floor(Math.random() * (140 - 80) + 80);
+    wallHeight = Math.floor(Math.random() * (130 - 110) + 110);
     wallList.push(newWall);
   }
 
@@ -205,8 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
         wallList.splice(i, 1);
       } else {
         wallList[i].x -= wallVelocity;
-        ctx.fillStyle = "brown";
-        ctx.fillRect(wallList[i].x, wallList[i].y, wallWidth, wallHeight);
+        ctx.drawImage(wall, wallList[i].x, wallList[i].y, wallWidth, wallHeight);
 
         if (wallCount >= wallInterval) {
           addWall();
@@ -219,8 +225,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function collisionCheck() {
     for (var i = 0; i < wallList.length; i++) {
-      if (chopperXPos < (wallList[i].x + wallWidth) &&
-      (chopperXPos + chopperWidth) > wallList[i].x && chopperYPos < (wallList[i].y + wallHeight) &&
+      if (chopperXPos < (wallList[i].x + 15 + wallWidth) &&
+      (chopperXPos + chopperWidth) > wallList[i].x + 15 && chopperYPos < (wallList[i].y + wallHeight) &&
       (chopperYPos + chopperHeight) > wallList[i].y ) {
           crash = true;
           gameOver = true;
@@ -249,13 +255,12 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("i am increasing the score");
     endTime = Date.now();
     elapsedTime = endTime - startTime;
-    score = Math.floor((endTime - startTime - pauseTotal) / 300);
+    score = Math.floor((endTime - startTime - pauseTotal) / 400);
   }
 
   function difficultyCheck () {
     console.log(wallVelocity);
     //move to Level 2
-    // debugger
     if (score < 50) {
       wallVelocity = 4;
       wallInterval = 90;
@@ -342,7 +347,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.fillStyle = 'white';
     ctx.fillText('GAME OVER', 439, 230);
     ctx.font = "30px Orbitron";
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "orange";
     ctx.fillText('Your Score: '+ score, 482, 290);
     ctx.fillStyle = "white";
     ctx.font = '30px Orbitron';
@@ -388,7 +393,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.keyCode === 70) {
       flying = true;
     }
-    // event.preventDefault();
   });
 
   document.addEventListener('keyup', (event) => {
@@ -396,7 +400,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.keyCode === 70) {
       flying = false;
     }
-    // event.preventDefault();
   });
 
   function startAnimation(FPS) {
