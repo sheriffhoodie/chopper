@@ -13,19 +13,16 @@ document.addEventListener("DOMContentLoaded", () => {
   let elapsedTime;
   // let score;
 
-
   var chopper = new Image ();
   chopper.src = "images/helicopter5.png";
   let chopperWidth = 208;
   let chopperHeight = 62;
   let chopperXPos;
   let chopperYPos;
-  // var chopperImage = new Image();
-  // chopperImage.src = "images/helicopter-spritesheet.png";
 
   var bgHeight = 500;
   var bgWidth = 1170;
-  var bgVelocity = 18;
+  var bgVelocity = 12;
   var background = new Image ();
   background.src = "images/space-bkgd.jpg";
   let scrollX;
@@ -35,8 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let wallCount;
   var wallHeight = 130;
   var wallWidth = 40;
-  var wallVelocity = 7;
-  var wallInterval = 90;
+  let wallVelocity;
+  let wallInterval;
 
   let score;
   let crash;
@@ -50,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let termVel = 10;
 
   function setup() {
+    // debugger
     pauseTotal = 0;
     gameOver = false;
     score = 0;
@@ -71,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Game State Modes
   function clear() {
-    // console.log("i am clearing");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
@@ -132,6 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // console.log("i am game start");
     gameState = "pause";
     clear();
+    wallVelocity = 7;
+    wallInterval = 90;
     drawBackground();
     drawChopper();
     wallList = new Array();
@@ -160,11 +159,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let framesPerRow;
     framesPerRow = Math.floor(image.width / frameWidth);
 
-
     this.update = function () {
       // if (counter === (frameSpeed - 1))
       // console.log("HEREHEREHERE");
-        currentFrame = (currentFrame + 1) % endFrame;
+      currentFrame = (currentFrame + 1) % endFrame;
         // counter = (counter +  1) % frameSpeed;
     };
 
@@ -224,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (chopperXPos < (wallList[i].x + wallWidth) &&
       (chopperXPos + chopperWidth) > wallList[i].x && chopperYPos < (wallList[i].y + wallHeight) &&
       (chopperYPos + chopperHeight) > wallList[i].y ) {
-          // console.log("hit");
           crash = true;
           gameOver = true;
           endGame();
@@ -256,28 +253,49 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function difficultyCheck () {
-    console.log(score);
+    console.log(wallVelocity);
     //move to Level 2
     // debugger
-    if (score === 100) {
-      wallVelocity += 2;
-      wallInterval -= 2;
-      //Level 3
-    } else if (score === 220) {
-      wallVelocity += 3;
-      wallInterval -= 5;
-      //Level 4
-    } else if (score === 300) {
-      wallVelocity += 4;
-      wallInterval -= 6;
-      //Level 5
-    } else if (score === 400) {
-      wallVelocity += 3;
-      wallInterval -= 6;
-      //Level 6
-    } else if (score === 510) {
-      wallVelocity += 6;
-      wallInterval -= 5;
+    if (score < 50) {
+      wallVelocity = 4;
+      wallInterval = 90;
+      return;
+    } //Level 3
+    if (score < 100) {
+      wallVelocity = 6;
+      wallInterval = 70;
+      return;
+    } //Level 4
+    if (score < 200) {
+      wallVelocity = 8;
+      wallInterval = 55;
+      return;
+    } //Level 5
+    if (score < 320) {
+      wallVelocity = 10;
+      wallInterval = 45;
+      return;
+    } //Level 6
+    if (score < 410) {
+      wallVelocity = 13;
+      wallInterval = 35;
+      return;
+    } //Level 7
+    if (score < 550) {
+      wallVelocity = 15;
+      wallInterval = 30;
+    }
+    if (score < 800) {
+      wallVelocity = 18;
+      wallInterval = 27;
+    }
+    if (score < 1000) {
+      wallVelocity = 20;
+      wallInterval = 23;
+    }
+    if (score >= 1001) {
+      wallVelocity = 22;
+      wallInterval = 21;
     }
   }
 
@@ -312,15 +330,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function endGame() {
-    // console.log("i am ending game");
     if (gameOver === true) {
       pause();
       explodeChopper();
-      setTimeout(function () {renderGameOver();}, 30);
+      setTimeout(function () {showGameOver();}, 30);
     }
   }
 
-  function renderGameOver () {
+  function showGameOver () {
     ctx.font = '48px Orbitron';
     ctx.fillStyle = 'white';
     ctx.fillText('GAME OVER', 439, 230);
