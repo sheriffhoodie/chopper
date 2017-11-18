@@ -21,12 +21,21 @@ document.addEventListener("DOMContentLoaded", () => {
   let chopperXPos;
   let chopperYPos;
 
-  var bgHeight = 500;
-  var bgWidth = 1170;
-  var bgVelocity = 12;
-  var background = new Image ();
-  background.src = "images/space-bkgd.jpg";
-  let scrollX;
+  //Space Background
+  var spaceBgHeight = 500;
+  var spaceBgWidth = 1170;
+  var spaceBgVelocity = 12;
+  var spaceBackground = new Image ();
+  spaceBackground.src = "images/space-bkgd.jpg";
+  let spaceScrollX;
+
+  //Solar Background
+  var solarBgHeight = 220;
+  var solarBgWidth = 1112;
+  var solarBgVelocity = 12;
+  var solarBackground = new Image ();
+  solarBackground.src = "images/sunsurface2.png";
+  let solarScrollX;
 
   var wall = new Image ();
   wall.src = "images/asteroid2.png";
@@ -54,13 +63,14 @@ document.addEventListener("DOMContentLoaded", () => {
     score = 0;
     chopperXPos = 75;
     chopperYPos = 100;
-    scrollX = 0;
+    spaceScrollX = 0;
     crash = false;
     wallList = new Array();
     wallCount = 0;
     addWall();
     ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
-    ctx.drawImage(background, 0, 0, bgWidth, bgHeight);
+    ctx.drawImage(spaceBackground, 0, 0, spaceBgWidth, spaceBgHeight);
+    ctx.drawImage(solarBackground, 0, canvas.height - solarBgHeight * .75, canvas.width, solarBgHeight);
   }
 
   window.onload = function() {
@@ -74,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function play() {
-    if (!startTime) {
+    if (startTime === undefined) {
       startTime = Date.now();
     }
     if (gameState === "pause") {
@@ -111,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //play/pause with spacebar
   document.addEventListener("keypress", (event) => {
-    if (event.keyCode === 32) {
+    if ((event.keyCode === 32) && (gameOver !== true)) {
       if (gameState === "pause") {
         play();
       } else if (gameState === "play") {
@@ -138,23 +148,33 @@ document.addEventListener("DOMContentLoaded", () => {
     clear();
     wallVelocity = 7;
     wallInterval = 90;
-    drawBackground();
+    drawSpaceBackground();
+    drawSolarBackground();
     drawChopper();
     wallList = new Array();
     drawWalls();
     fly();
   }
 
-  function drawBackground () {
-    if (scrollX >= canvas.width) {
-      scrollX = 0;
+  function drawSpaceBackground () {
+    if (spaceScrollX >= canvas.width) {
+      spaceScrollX = 0;
     }
-    scrollX += bgVelocity;
-    ctx.drawImage(background, -scrollX, 0, bgWidth, bgHeight);
-    ctx.drawImage(background, canvas.width - scrollX, 0, bgWidth, bgHeight);
+    spaceScrollX += spaceBgVelocity;
+    ctx.drawImage(spaceBackground, -spaceScrollX, 0, spaceBgWidth, spaceBgHeight);
+    ctx.drawImage(spaceBackground, canvas.width - spaceScrollX, 0, spaceBgWidth, spaceBgHeight);
   }
 
-  function SpriteSheet () {
+  function drawSolarBackground () {
+    // if (solarScrollX >= canvas.width) {
+    //   solarScrollX = 0;
+    // }
+    // solarScrollX += solarBgVelocity;
+    // ctx.drawImage(solarBackground, -solarScrollX, 0, solarBgWidth, solarBgHeight);
+    // ctx.drawImage(solarBackground, canvas.width - solarScrollX, canvas.height - solarBgHeight, solarBgWidth, solarBgHeight);
+  }
+
+  function chopperSprite () {
     let path = 'images/helicopter-spritesheet.png';
     let frameWidth = 423;
     let frameHeight = 150;
@@ -187,10 +207,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function drawChopper () {
-    let spritesheet = new SpriteSheet();
+    let chopperImage = new chopperSprite();
     if (gameState === "play") {
-      spritesheet.update();
-      spritesheet.draw(chopperXPos, chopperYPos);
+      chopperImage.update();
+      chopperImage.draw(chopperXPos, chopperYPos);
       // ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
     }
   }
@@ -225,9 +245,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function collisionCheck() {
     for (var i = 0; i < wallList.length; i++) {
-      if (chopperXPos < (wallList[i].x + 15 + wallWidth) &&
-      (chopperXPos + chopperWidth) > wallList[i].x + 15 && chopperYPos < (wallList[i].y + wallHeight) &&
-      (chopperYPos + chopperHeight) > wallList[i].y ) {
+      if (chopperXPos < (wallList[i].x + wallWidth) &&
+      (chopperXPos + chopperWidth) > wallList[i].x && chopperYPos < (wallList[i].y + wallHeight) &&
+      (chopperYPos + chopperHeight) > wallList[i].y) {
           crash = true;
           gameOver = true;
           endGame();
@@ -252,56 +272,52 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function increaseScore() {
-    console.log("i am increasing the score");
+    // console.log("i am increasing the score");
     endTime = Date.now();
     elapsedTime = endTime - startTime;
     score = Math.floor((endTime - startTime - pauseTotal) / 400);
   }
 
   function difficultyCheck () {
+    // debugger
     console.log(wallVelocity);
     //move to Level 2
     if (score < 50) {
       wallVelocity = 4;
-      wallInterval = 90;
-      return;
+      wallInterval = 140;
     } //Level 3
-    if (score < 100) {
-      wallVelocity = 6;
-      wallInterval = 70;
-      return;
+    if ((score > 50) && (score < 100)) {
+      wallVelocity = 5;
+      wallInterval = 110;
     } //Level 4
-    if (score < 200) {
-      wallVelocity = 8;
-      wallInterval = 55;
-      return;
+    if ((score > 100) && (score < 200)) {
+      wallVelocity = 6;
+      wallInterval = 90;
     } //Level 5
-    if (score < 320) {
-      wallVelocity = 10;
-      wallInterval = 45;
-      return;
+    if ((score > 200) && (score < 320)) {
+      wallVelocity = 8;
+      wallInterval = 70;
     } //Level 6
-    if (score < 410) {
-      wallVelocity = 13;
-      wallInterval = 35;
-      return;
+    if ((score > 320) && (score < 410)) {
+      wallVelocity = 10;
+      wallInterval = 60;
     } //Level 7
-    if (score < 550) {
-      wallVelocity = 15;
-      wallInterval = 30;
-    }
-    if (score < 800) {
-      wallVelocity = 18;
-      wallInterval = 27;
-    }
-    if (score < 1000) {
-      wallVelocity = 20;
-      wallInterval = 23;
-    }
-    if (score >= 1001) {
-      wallVelocity = 22;
-      wallInterval = 21;
-    }
+    // if ((score > 410) && (score < 550)) {
+    //   wallVelocity = 12;
+    //   wallInterval = 50;
+    // } //Level 8
+    // if ((score > 550) && (score < 800)) {
+    //   wallVelocity = 14;
+    //   wallInterval = 40;
+    // } //Level 9
+    // if ((score > 800) && (score < 1000)) {
+    //   wallVelocity = 16;
+    //   wallInterval = 33;
+    // // } //Level Hanhee
+    // if (score >= 1001) {
+    //   wallVelocity = 18;
+    //   wallInterval = 25;
+    // }
   }
 
   //simplify equation with vertical velocity that decreases proportionately
@@ -328,8 +344,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function explodeChopper() {
     if (crash === true) {
       chopper.src = "images/explosion1.png";
-      chopperHeight = 350;
-      chopperWidth = 350;
+      chopperHeight = 483 * 0.72;
+      chopperWidth = 726 * 0.72;
       setTimeout(function () {ctx.drawImage(chopper, chopperXPos - chopperWidth/4, chopperYPos - chopperHeight/2, chopperWidth, chopperHeight);}, 29);
     }
   }
@@ -380,7 +396,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function render () {
     clear();
-    drawBackground();
+    drawSpaceBackground();
+    drawSolarBackground();
     drawChopper();
     drawWalls();
     ctx.fillStyle = "white";
@@ -417,5 +434,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   gameStart();
   startAnimation(30);
-
 });

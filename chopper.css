@@ -32,7 +32,10 @@ a {
 }
 
 canvas {
-  border: 15px solid blue;
+  border-right: 12px solid blue;
+  border-left: 12px solid blue;
+  border-top: 12px ridge orange;
+  border-bottom: 12px ridge orange;
   background-color: black;
 }
 
@@ -64,5 +67,5 @@ body {
 }
 
 .instructions {
-  line-height: 1.5; 
+  line-height: 1.5;
 }
