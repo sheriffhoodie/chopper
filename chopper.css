@@ -6,6 +6,12 @@ header {
   border-bottom: 2px solid blue;
 }
 
+/*.main {
+  position: relative;
+  top: 0;
+  left: 0;
+}*/
+
 h2 {
   margin: 0;
 }
@@ -32,6 +38,7 @@ a {
 }
 
 canvas {
+  /*position: absolute;*/
   border-right: 12px solid blue;
   border-left: 12px solid blue;
   border-top: 12px ridge orange;
@@ -68,4 +75,9 @@ body {
 
 .instructions {
   line-height: 1.5;
+}
+
+#canvas-fg {
+  position: absolute;
+  z-index: 1;
 }

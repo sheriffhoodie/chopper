@@ -14,6 +14,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let elapsedTime;
   // let score;
 
+  //sounds
+  var chopperSound = new Audio('sounds/helicopter.mp3');
+  var menuMusic = new Audio('sounds/clearside-assimilator.wav');
+  menuMusic.loop = true;
+  var gameMusic = new Audio('sounds/clearside-siste-viator.wav');
+  gameMusic.loop = true;
+  var explosionSFX = new Audio('sounds/explosion.flac');
+
   var chopper = new Image ();
   chopper.src = "images/helicopter5.png";
   let chopperWidth = 208;
@@ -39,12 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   var wall = new Image ();
   wall.src = "images/asteroid2.png";
-  let wallList;
-  let wallCount;
-  let wallHeight;
-  let wallWidth;
-  let wallVelocity;
-  let wallInterval;
+  let rockList;
+  let rockCount;
+  let rockVelocity;
+  let rockInterval;
 
   let score;
   let crash;
@@ -65,9 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
     chopperYPos = 100;
     spaceScrollX = 0;
     crash = false;
-    wallList = new Array();
-    wallCount = 0;
-    addWall();
+    rockList = new Array();
+    rockCount = 0;
+    addRock();
     ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
     ctx.drawImage(spaceBackground, 0, 0, spaceBgWidth, spaceBgHeight);
     ctx.drawImage(solarBackground, 0, canvas.height - solarBgHeight * .75, canvas.width, solarBgHeight);
@@ -76,6 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
   window.onload = function() {
     setup();
     setTimeout(function () {showIntro();}, 30);
+    menuMusic.play();
+    menuMusic.muted = true;
   };
 
   // Game State Modes
@@ -89,6 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (gameState === "pause") {
       gameState = "play";
+      menuMusic.pause();
+      gameMusic.play();
       if (pauseStart) {
         pauseTotal += Date.now() - pauseStart;
       }
@@ -98,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function pause() {
     if (gameState === "play") {
       gameState = "pause";
+      gameMusic.pause();
       pauseStart = Date.now();
     }
   }
@@ -146,13 +157,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // console.log("i am game start");
     gameState = "pause";
     clear();
-    wallVelocity = 7;
-    wallInterval = 90;
+    rockVelocity = 4;
+    rockInterval = 140;
     drawSpaceBackground();
     drawSolarBackground();
     drawChopper();
-    wallList = new Array();
-    drawWalls();
+    rockList = new Array();
+    drawRocks();
     fly();
   }
 
@@ -166,12 +177,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function drawSolarBackground () {
-    // if (solarScrollX >= canvas.width) {
-    //   solarScrollX = 0;
-    // }
-    // solarScrollX += solarBgVelocity;
-    // ctx.drawImage(solarBackground, -solarScrollX, 0, solarBgWidth, solarBgHeight);
-    // ctx.drawImage(solarBackground, canvas.width - solarScrollX, canvas.height - solarBgHeight, solarBgWidth, solarBgHeight);
+    if (solarScrollX >= canvas.width) {
+      solarScrollX = 0;
+    }
+    solarScrollX += solarBgVelocity;
+    ctx.drawImage(solarBackground, -solarScrollX, 0, solarBgWidth, solarBgHeight);
+    ctx.drawImage(solarBackground, canvas.width - solarScrollX, canvas.height - solarBgHeight, solarBgWidth, solarBgHeight);
   }
 
   function chopperSprite () {
@@ -215,28 +226,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function addWall() {
-    // console.log("i am adding wall");
-    let newWall = {};
-    newWall.x = canvas.width;
-    newWall.y = Math.floor(Math.random() * canvas.height - wallHeight);
-    wallWidth = Math.floor(Math.random() * (140 - 80) + 80);
-    wallHeight = Math.floor(Math.random() * (130 - 110) + 110);
-    wallList.push(newWall);
+  function addRock() {
+    // console.log("i am adding rock");
+    let newRock = {};
+    newRock.width = Math.floor(Math.random() * (140 - 80) + 80);
+    newRock.height = Math.floor(Math.random() * (130 - 110) + 110);
+    newRock.x = canvas.width;
+    newRock.y = Math.floor(Math.random() * canvas.height - newRock.height);
+    rockList.push(newRock);
   }
 
-  function drawWalls () {
-    wallCount++;
-    for (var i = 0; i < wallList.length; i++) {
-      if (wallList[i].x < 0 - wallWidth) {
-        wallList.splice(i, 1);
+  function drawRocks () {
+    rockCount++;
+    for (var i = 0; i < rockList.length; i++) {
+      if (rockList[i].x < 0 - rockList[i].width) {
+        rockList.splice(i, 1);
       } else {
-        wallList[i].x -= wallVelocity;
-        ctx.drawImage(wall, wallList[i].x, wallList[i].y, wallWidth, wallHeight);
+        rockList[i].x -= rockVelocity;
+        ctx.drawImage(wall, rockList[i].x, rockList[i].y, rockList[i].width, rockList[i].height);
 
-        if (wallCount >= wallInterval) {
-          addWall();
-          wallCount = 0;
+        if (rockCount >= rockInterval) {
+          addRock();
+          rockCount = 0;
           // score += 10;
         }
       }
@@ -244,10 +255,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function collisionCheck() {
-    for (var i = 0; i < wallList.length; i++) {
-      if (chopperXPos < (wallList[i].x + wallWidth) &&
-      (chopperXPos + chopperWidth) > wallList[i].x && chopperYPos < (wallList[i].y + wallHeight) &&
-      (chopperYPos + chopperHeight) > wallList[i].y) {
+    for (var i = 0; i < rockList.length; i++) {
+      if (chopperXPos < (rockList[i].x + rockList[i].width) &&
+      (chopperXPos + chopperWidth) > rockList[i].x && chopperYPos < (rockList[i].y + rockList[i].length) &&
+      (chopperYPos + chopperHeight) > rockList[i].y) {
+        console.log("hit");
           crash = true;
           gameOver = true;
           endGame();
@@ -280,46 +292,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function difficultyCheck () {
     // debugger
-    console.log(wallVelocity);
+    // console.log(rockVelocity);
     //move to Level 2
     if (score < 50) {
-      wallVelocity = 4;
-      wallInterval = 140;
+      rockVelocity = 4;
+      rockInterval = 140;
     } //Level 3
     if ((score > 50) && (score < 100)) {
-      wallVelocity = 5;
-      wallInterval = 110;
+      rockVelocity = 5;
+      rockInterval = 110;
     } //Level 4
     if ((score > 100) && (score < 200)) {
-      wallVelocity = 6;
-      wallInterval = 90;
+      rockVelocity = 6;
+      rockInterval = 90;
     } //Level 5
     if ((score > 200) && (score < 320)) {
-      wallVelocity = 8;
-      wallInterval = 70;
+      rockVelocity = 8;
+      rockInterval = 70;
     } //Level 6
     if ((score > 320) && (score < 410)) {
-      wallVelocity = 10;
-      wallInterval = 60;
+      rockVelocity = 10;
+      rockInterval = 60;
     } //Level 7
-    // if ((score > 410) && (score < 550)) {
-    //   wallVelocity = 12;
-    //   wallInterval = 50;
-    // } //Level 8
-    // if ((score > 550) && (score < 800)) {
-    //   wallVelocity = 14;
-    //   wallInterval = 40;
-    // } //Level 9
-    // if ((score > 800) && (score < 1000)) {
-    //   wallVelocity = 16;
-    //   wallInterval = 33;
-    // // } //Level Hanhee
-    // if (score >= 1001) {
-    //   wallVelocity = 18;
-    //   wallInterval = 25;
-    // }
+    if ((score > 410) && (score < 550)) {
+      rockVelocity = 12;
+      rockInterval = 50;
+    } //Level 8
+    if ((score > 550) && (score < 800)) {
+      rockVelocity = 14;
+      rockInterval = 40;
+    } //Level 9
+    if ((score > 800) && (score < 1000)) {
+      rockVelocity = 16;
+      rockInterval = 33;
+    } //Level Hanhee
+    if (score >= 1001) {
+      rockVelocity = 18;
+      rockInterval = 25;
+    }
   }
 
+  document.addEventListener('keydown', (event) => {
+    // console.log("i am flying - keydown");
+    if (event.keyCode === 70) {
+      flying = true;
+    }
+  });
+
+  document.addEventListener('keyup', (event) => {
+    // console.log("i am not flying - keyup");
+    if (event.keyCode === 70) {
+      flying = false;
+    }
+  });
   //simplify equation with vertical velocity that decreases proportionately
   //and then increases upward velocity with accelaration, curving the flying
   function fly () {
@@ -347,6 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
       chopperHeight = 483 * 0.72;
       chopperWidth = 726 * 0.72;
       setTimeout(function () {ctx.drawImage(chopper, chopperXPos - chopperWidth/4, chopperYPos - chopperHeight/2, chopperWidth, chopperHeight);}, 29);
+      explosionSFX.play();
     }
   }
 
@@ -399,25 +425,11 @@ document.addEventListener("DOMContentLoaded", () => {
     drawSpaceBackground();
     drawSolarBackground();
     drawChopper();
-    drawWalls();
+    drawRocks();
     ctx.fillStyle = "white";
     ctx.font = "30px Orbitron";
     ctx.fillText('Score: '+ formatScore(score), 900, 50);
   }
-
-  document.addEventListener('keydown', (event) => {
-    // console.log("i am flying - keydown");
-    if (event.keyCode === 70) {
-      flying = true;
-    }
-  });
-
-  document.addEventListener('keyup', (event) => {
-    // console.log("i am not flying - keyup");
-    if (event.keyCode === 70) {
-      flying = false;
-    }
-  });
 
   function startAnimation(FPS) {
     FPSInterval = 1000/FPS;
