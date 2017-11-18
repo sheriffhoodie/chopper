@@ -21,6 +21,14 @@ document.addEventListener("DOMContentLoaded", () => {
   var gameMusic = new Audio('sounds/clearside-siste-viator.wav');
   gameMusic.loop = true;
   var explosionSFX = new Audio('sounds/explosion.flac');
+  let muteButton = document.querySelector("#mute-button");
+  let allMuted = true;
+  muteButton.addEventListener('click', () => {
+    allMuted = !allMuted;
+    gameMusic.muted = !gameMusic.muted;
+    menuMusic.muted = !menuMusic.muted;
+    explosionSFX.muted = !explosionSFX.muted;
+  });
 
   var chopper = new Image ();
   chopper.src = "images/helicopter5.png";
@@ -64,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let termVel = 10;
 
   function setup() {
+    menuMusic.muted = true;
     pauseTotal = 0;
     gameOver = false;
     score = 0;
@@ -83,7 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setup();
     setTimeout(function () {showIntro();}, 30);
     menuMusic.play();
-    menuMusic.muted = true;
+    gameMusic.muted = true;
+    explosionSFX.muted = true;
   };
 
   // Game State Modes
@@ -290,8 +300,23 @@ document.addEventListener("DOMContentLoaded", () => {
     score = Math.floor((endTime - startTime - pauseTotal) / 400);
   }
 
+  function formatScore () {
+    if (score > 99999) {
+      return '99999';
+    } else if (score > 9999) {
+      return score;
+    } else if (score > 999) {
+      return '0' + score;
+    } else if (score > 99) {
+      return '00' + score;
+    } else if (score > 9) {
+      return '000' + score;
+    } else {
+      return '0000' + score;
+    }
+  }
+
   function difficultyCheck () {
-    // debugger
     // console.log(rockVelocity);
     //move to Level 2
     if (score < 50) {
@@ -395,22 +420,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.font = '30px Orbitron';
     ctx.fillText('press cmd + r to restart', 417, 350);
   }
-
-  function formatScore () {
-  if (score > 99999) {
-    return '99999';
-  } else if (score > 9999) {
-    return score;
-  } else if (score > 999) {
-    return '0' + score;
-  } else if (score > 99) {
-    return '00' + score;
-  } else if (score > 9) {
-    return '000' + score;
-  } else {
-    return '0000' + score;
-  }
-}
 
   function update () {
     increaseScore();
