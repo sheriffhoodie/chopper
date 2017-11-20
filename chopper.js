@@ -267,15 +267,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function collisionCheck() {
     // debugger
     for (var i = 0; i < rockList.length; i++) {
-      if (chopperYPos + chopperHeight < rockList[i].y &&
-        chopperYPos > rockList[i].y + rockList[i].height &&
-        chopperXPos + chopperWidth < rockList[i].x &&
-        chopperXPos > rockList[i].x + rockList[i].width) {
-          // Method 2
-      // if (chopperXPos < (rockList[i].x + rockList[i].width) &&
-      // (chopperXPos + chopperWidth) > rockList[i].x && chopperYPos < (rockList[i].y + rockList[i].length) &&
-      // (chopperYPos + chopperHeight) > rockList[i].y) {
-        console.log("hit");
+      if (chopperYPos + chopperHeight > rockList[i].y + 5 &&
+        chopperYPos < rockList[i].y + rockList[i].height + 5 &&
+        chopperXPos + chopperWidth > rockList[i].x - 5 &&
+        chopperXPos < rockList[i].x + rockList[i].width - 5) {
           crash = true;
           gameOver = true;
           endGame();
@@ -417,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
            var y = parseInt(spriteIndex / (rows - 1)) * frameHeight;
            ctx.drawImage(explosion, x, y, frameWidth, frameHeight, chopperXPos, chopperYPos - chopperHeight, 300, 300);
            spriteIndex++;
-       }
+       }, 30
      );
      explosionSFX.play();
      pause();
