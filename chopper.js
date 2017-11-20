@@ -12,24 +12,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let endTime;
   let FPSInterval;
   let elapsedTime;
-  // let score;
 
   //sounds
-  var chopperSound = new Audio('sounds/helicopter.mp3');
+  var chopperSound = new Howl('sounds/helicopter.mp3');
   var menuMusic = new Audio('sounds/clearside-assimilator.wav');
   menuMusic.loop = true;
   var gameMusic = new Audio('sounds/clearside-siste-viator.wav');
   gameMusic.loop = true;
   var explosionSFX = new Audio('sounds/explosion.flac');
   let muteButton = document.querySelector("#mute-button");
-  let allMuted = true;
   muteButton.addEventListener('click', () => {
-    allMuted = !allMuted;
     gameMusic.muted = !gameMusic.muted;
     menuMusic.muted = !menuMusic.muted;
     explosionSFX.muted = !explosionSFX.muted;
   });
 
+  //chopper variables
   var chopper = new Image ();
   chopper.src = "images/helicopter5.png";
   let chopperWidth = 208;
@@ -53,13 +51,15 @@ document.addEventListener("DOMContentLoaded", () => {
   solarBackground.src = "images/sunsurface2.png";
   let solarScrollX;
 
-  var wall = new Image ();
-  wall.src = "images/asteroid2.png";
+  //rock variables
+  var rock = new Image ();
+  rock.src = "images/asteroid2.png";
   let rockList;
   let rockCount;
   let rockVelocity;
   let rockInterval;
 
+  //gameplay variables
   let score;
   let crash;
   var flying = false;
@@ -70,9 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let lift = 0.8;
   let gravity = 1.2;
   let termVel = 10;
+  menuMusic.muted = true;
+  gameMusic.muted = true;
+  explosionSFX.muted = true;
 
   function setup() {
-    menuMusic.muted = true;
     pauseTotal = 0;
     gameOver = false;
     score = 0;
@@ -92,8 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setup();
     setTimeout(function () {showIntro();}, 30);
     menuMusic.play();
-    gameMusic.muted = true;
-    explosionSFX.muted = true;
   };
 
   // Game State Modes
@@ -106,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       startTime = Date.now();
     }
     if (gameState === "pause") {
+      // debugger
       gameState = "play";
       menuMusic.pause();
       gameMusic.play();
@@ -253,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
         rockList.splice(i, 1);
       } else {
         rockList[i].x -= rockVelocity;
-        ctx.drawImage(wall, rockList[i].x, rockList[i].y, rockList[i].width, rockList[i].height);
+        ctx.drawImage(rock, rockList[i].x, rockList[i].y, rockList[i].width, rockList[i].height);
 
         if (rockCount >= rockInterval) {
           addRock();

@@ -18,6 +18,8 @@ h2 {
 
 .game-title {
   margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 44px;
 }
 
 .header-left {
@@ -97,6 +99,7 @@ button {
   font-weight: 900;
   margin-top: 5px;
   margin-bottom: 10px;
+  outline: none;
 }
 
 label {
