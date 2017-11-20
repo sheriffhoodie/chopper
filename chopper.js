@@ -198,31 +198,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function chopperSprite () {
     let path = 'images/helicopter-spritesheet.png';
-    let frameWidth = 423;
-    let frameHeight = 150;
-    let frameSpeed = 3;
-    let endFrame = 3;
+    let chopFrameWidth = 423;
+    let chopFrameHeight = 150;
+    let chopFrameSpeed = 3;
+    let chopEndFrame = 3;
     let image = new Image ();
     let counter = 0;
     image.src = path;
-    let framesPerRow;
-    framesPerRow = Math.floor(image.width / frameWidth);
+    let chopFramesPerRow;
+    chopFramesPerRow = Math.floor(image.width / chopFrameWidth);
 
     this.update = function () {
       // if (counter === (frameSpeed - 1))
       // console.log("HEREHEREHERE");
-      currentFrame = (currentFrame + 1) % endFrame;
+      currentFrame = (currentFrame + 1) % chopEndFrame;
         // counter = (counter +  1) % frameSpeed;
     };
 
     this.draw = function (x, y) {
       // console.log("spritesheet drawing");
-      let row = Math.floor(currentFrame / framesPerRow);
-      let col = Math.floor(currentFrame % framesPerRow);
+      let row = Math.floor(currentFrame / chopFramesPerRow);
+      let col = Math.floor(currentFrame % chopFramesPerRow);
       ctx.drawImage(
         image,
-        col * frameWidth, row * frameHeight,
-        frameWidth, frameHeight, x, y,
+        col * chopFrameWidth, row * chopFrameHeight,
+        chopFrameWidth, chopFrameHeight, x, y,
         208, 62);
     };
     let self = this;
@@ -267,9 +267,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function collisionCheck() {
     // debugger
     for (var i = 0; i < rockList.length; i++) {
-      if (chopperXPos < (rockList[i].x + rockList[i].width) &&
-      (chopperXPos + chopperWidth) > rockList[i].x && chopperYPos < (rockList[i].y + rockList[i].length) &&
-      (chopperYPos + chopperHeight) > rockList[i].y) {
+      if (chopperYPos + chopperHeight < rockList[i].y &&
+        chopperYPos > rockList[i].y + rockList[i].height &&
+        chopperXPos + chopperWidth < rockList[i].x &&
+        chopperXPos > rockList[i].x + rockList[i].width) {
+          // Method 2
+      // if (chopperXPos < (rockList[i].x + rockList[i].width) &&
+      // (chopperXPos + chopperWidth) > rockList[i].x && chopperYPos < (rockList[i].y + rockList[i].length) &&
+      // (chopperYPos + chopperHeight) > rockList[i].y) {
         console.log("hit");
           crash = true;
           gameOver = true;
@@ -392,21 +397,47 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function explodeChopper() {
-    if (crash === true) {
-      chopper.src = "images/explosion1.png";
-      chopperHeight = 483 * 0.72;
-      chopperWidth = 726 * 0.72;
-      setTimeout(function () {ctx.drawImage(chopper, chopperXPos - chopperWidth/4, chopperYPos - chopperHeight/2, chopperWidth, chopperHeight);}, 29);
-      explosionSFX.play();
-    }
-  }
+  // Defining the Explosion Sprite
+  let explosion = new Image ();
+  explosion.src = 'images/explosion-sprite2.png';
+   var spriteIndex = 0;
+   var frameWidth = 64;
+   var frameHeight = 64;
+   let expFramesPerRow = Math.floor(explosion.width / frameWidth);
+   var rows = 4;
+   var cols = 4;
+
+   function explodeChopper() {
+       if (spriteIndex > 15) {
+           return;
+       }
+       setTimeout(function () {
+           requestAnimationFrame(explodeChopper);
+           var x = spriteIndex % (cols - 1) * frameWidth;
+           var y = parseInt(spriteIndex / (rows - 1)) * frameHeight;
+           ctx.drawImage(explosion, x, y, frameWidth, frameHeight, chopperXPos, chopperYPos - chopperHeight, 300, 300);
+           spriteIndex++;
+       }
+     );
+     explosionSFX.play();
+     pause();
+   }
+
+  // function explodeChopper() {
+  //   if (crash === true) {
+  //     chopper.src = "images/explosion1.png";
+  //     chopperHeight = 483 * 0.72;
+  //     chopperWidth = 726 * 0.72;
+  //     setTimeout(function () {ctx.drawImage(chopper, chopperXPos - chopperWidth/4, chopperYPos - chopperHeight/2, chopperWidth, chopperHeight);}, 29);
+  //     explosionSFX.play();
+  //   }
+  // }
 
   function endGame() {
     if (gameOver === true) {
-      pause();
       explodeChopper();
       setTimeout(function () {showGameOver();}, 30);
+      pause();
     }
   }
 
