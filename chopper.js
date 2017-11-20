@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let elapsedTime;
 
   //sounds
-  var chopperSound = new Howl('sounds/helicopter.mp3');
+  var chopperSound = new Audio('sounds/helicopter.mp3');
   var menuMusic = new Audio('sounds/clearside-assimilator.wav');
   menuMusic.loop = true;
   var gameMusic = new Audio('sounds/clearside-siste-viator.wav');
@@ -259,13 +259,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (rockCount >= rockInterval) {
           addRock();
           rockCount = 0;
-          // score += 10;
         }
       }
     }
   }
 
   function collisionCheck() {
+    // debugger
     for (var i = 0; i < rockList.length; i++) {
       if (chopperXPos < (rockList[i].x + rockList[i].width) &&
       (chopperXPos + chopperWidth) > rockList[i].x && chopperYPos < (rockList[i].y + rockList[i].length) &&
