@@ -19,9 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
   menuMusic.loop = true;
   var gameMusic = new Audio('sounds/clearside-siste-viator.wav');
   gameMusic.loop = true;
+  // gameMusic.defaultMuted = true;
   var explosionSFX = new Audio('sounds/explosion.flac');
+  explosionSFX.defaultMuted = true;
   let muteButton = document.querySelector("#mute-button");
+  // menuMusic.muted = true;
+  // gameMusic.muted = true;
+  // explosionSFX.muted = true;
+  let muteCheck = true;
   muteButton.addEventListener('click', () => {
+    muteCheck = !muteCheck;
     gameMusic.muted = !gameMusic.muted;
     menuMusic.muted = !menuMusic.muted;
     explosionSFX.muted = !explosionSFX.muted;
@@ -70,9 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let lift = 0.8;
   let gravity = 1.2;
   let termVel = 10;
-  menuMusic.muted = true;
-  gameMusic.muted = true;
-  explosionSFX.muted = true;
 
   function setup() {
     pauseTotal = 0;
@@ -94,6 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setup();
     setTimeout(function () {showIntro();}, 30);
     menuMusic.play();
+    gameMusic.preload = "auto";
   };
 
   // Game State Modes
@@ -101,15 +106,25 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // setTimeout(function () {
+  // }, 30 );
   function play() {
+    // debugger
+    // console.log(gameMusic.muted);
     if (startTime === undefined) {
       startTime = Date.now();
     }
+    menuMusic.pause();
+    // setInterval(function () {
+      if (muteCheck === false) {
+        // debugger
+        gameMusic.play();
+        gameMusic.muted = false;
+        explosionSFX.muted = false;
+      }
+    // }, 50);
     if (gameState === "pause") {
-      // debugger
       gameState = "play";
-      menuMusic.pause();
-      gameMusic.play();
       if (pauseStart) {
         pauseTotal += Date.now() - pauseStart;
       }
@@ -152,7 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     event.preventDefault();
     if (gameOver === true) {
-      // restart();
     }
   });
 
@@ -375,6 +389,8 @@ document.addEventListener("DOMContentLoaded", () => {
   //and then increases upward velocity with accelaration, curving the flying
   function fly () {
     // console.log("i am fly");
+    // console.log(gameMusic.muted);
+
     if(flying && crash === false) {
       flyRate = startFlyRate;
       chopperYPos = chopperYPos - flyRate;
@@ -449,6 +465,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function update () {
+    console.log(gameMusic.muted);
     increaseScore();
     borderCrashCheck();
     collisionCheck();
@@ -457,6 +474,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function render () {
+    // console.log(gameMusic.muted);
     clear();
     drawSpaceBackground();
     drawSolarBackground();
@@ -468,18 +486,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function startAnimation(FPS) {
+    // console.log(gameMusic.muted);
     FPSInterval = 1000/FPS;
     animate();
   }
 
   function animate() {
+    // console.log(gameMusic.muted);
+    // console.log(gameState);
     requestAnimationFrame(animate);
       if (gameState !== "pause") {
         update();
         render();
       }
     }
-
+setTimeout(function () {
+  gameMusic.muted = true;
+  menuMusic.muted = true;
+  explosionSFX.muted = true;
   gameStart();
   startAnimation(30);
+}, 0);
 });
