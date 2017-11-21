@@ -19,19 +19,21 @@ document.addEventListener("DOMContentLoaded", () => {
   menuMusic.loop = true;
   var gameMusic = new Audio('sounds/clearside-siste-viator.wav');
   gameMusic.loop = true;
-  // gameMusic.defaultMuted = true;
   var explosionSFX = new Audio('sounds/explosion.flac');
   explosionSFX.defaultMuted = true;
   let muteButton = document.querySelector("#mute-button");
-  // menuMusic.muted = true;
-  // gameMusic.muted = true;
-  // explosionSFX.muted = true;
+  menuMusic.muted = true;
+  gameMusic.muted = true;
+  explosionSFX.muted = true;
   let muteCheck = true;
   muteButton.addEventListener('click', () => {
-    muteCheck = !muteCheck;
-    gameMusic.muted = !gameMusic.muted;
-    menuMusic.muted = !menuMusic.muted;
-    explosionSFX.muted = !explosionSFX.muted;
+    // debugger
+    if (event.clientX !== 0) {
+      muteCheck = !muteCheck;
+      gameMusic.muted = !gameMusic.muted;
+      menuMusic.muted = !menuMusic.muted;
+      explosionSFX.muted = !explosionSFX.muted;
+    }
   });
 
   //chopper variables
@@ -92,13 +94,13 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
     ctx.drawImage(spaceBackground, 0, 0, spaceBgWidth, spaceBgHeight);
     ctx.drawImage(solarBackground, 0, canvas.height - solarBgHeight * .75, canvas.width, solarBgHeight);
+    menuMusic.play();
+    gameMusic.preload = "auto";
   }
 
   window.onload = function() {
     setup();
     setTimeout(function () {showIntro();}, 30);
-    menuMusic.play();
-    gameMusic.preload = "auto";
   };
 
   // Game State Modes
@@ -106,23 +108,16 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  // setTimeout(function () {
-  // }, 30 );
   function play() {
-    // debugger
-    // console.log(gameMusic.muted);
     if (startTime === undefined) {
       startTime = Date.now();
     }
     menuMusic.pause();
-    // setInterval(function () {
       if (muteCheck === false) {
-        // debugger
         gameMusic.play();
         gameMusic.muted = false;
         explosionSFX.muted = false;
       }
-    // }, 50);
     if (gameState === "pause") {
       gameState = "play";
       if (pauseStart) {
@@ -142,7 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function restart() {
     clear();
     setup();
+    setTimeout(function () {showIntro();}, 30);
     gameStart();
+    startAnimation(30);
   }
 
   function showIntro () {
@@ -171,8 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("keypress", (event) => {
-    // console.log("i am restarting");
-    if (event.keyCode === 82) {
+    console.log("i am restarting");
+    if (event.key === "r") {
       restart();
     }
     // event.preventDefault();
@@ -389,8 +386,6 @@ document.addEventListener("DOMContentLoaded", () => {
   //and then increases upward velocity with accelaration, curving the flying
   function fly () {
     // console.log("i am fly");
-    // console.log(gameMusic.muted);
-
     if(flying && crash === false) {
       flyRate = startFlyRate;
       chopperYPos = chopperYPos - flyRate;
@@ -465,7 +460,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function update () {
-    console.log(gameMusic.muted);
     increaseScore();
     borderCrashCheck();
     collisionCheck();
@@ -474,7 +468,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function render () {
-    // console.log(gameMusic.muted);
     clear();
     drawSpaceBackground();
     drawSolarBackground();
@@ -486,25 +479,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function startAnimation(FPS) {
-    // console.log(gameMusic.muted);
     FPSInterval = 1000/FPS;
     animate();
   }
 
   function animate() {
-    // console.log(gameMusic.muted);
-    // console.log(gameState);
     requestAnimationFrame(animate);
       if (gameState !== "pause") {
         update();
         render();
       }
-    }
-setTimeout(function () {
-  gameMusic.muted = true;
-  menuMusic.muted = true;
-  explosionSFX.muted = true;
+  }
+
   gameStart();
   startAnimation(30);
-}, 0);
 });
