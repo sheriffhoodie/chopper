@@ -2,6 +2,8 @@
 
 [Live Link!](https://sheriffhoodie.github.io/space-chopper/)
 
+![Gameplay Gif](images/space-chopper.gif)
+
 Space Chopper is a 2D side-scrolling spinoff version of the classic Helicopter arcade game for 1 Player involving keeping a constantly falling helicopter hovering and dodging oncoming obstacles that appear randomly. The player simply uses the "F" key to engage the flight: pressing and holding down will cause the helicopter to steadily ascend while lightly tapping at regular intervals will keep it hovering at the same altitude and letting it go will cause the helicopter to lose altitude.
 
 There is no "end" to the game, your distance is tracked as you fly forward and is given to you as your score when you crash the chopper into an obstacle or the top or bottom edges of the screen.
