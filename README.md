@@ -26,16 +26,16 @@ In the game, users can:
 
 The game uses vanilla Javascript with HTML, CSS, and HTML Canvas for rendering with HTML5 Audio for sound effects and background music interface and playback. The main entry file holds all gameplay logic, leaving the canvas structure and styling to separate HTML and CSS files.
 
-## Future Directions:
+### Future Directions:
 
 * Save global high scores to a database with a username, display top 5 high scores before game start and after game end
 * Create different difficulty modes (easy and hard) that the user can choose from before play
 * Create playlist of shorter tracks that rotate through automatically
 * Add moving/rotating sprites for asteroids and additional types of obstacles
 
-Credits:
+### Credits:
 
-Music: 'Heliscope' by Jesse James
+* Music: 'Heliscope' by Jesse James
        'OuterSpace HipHop Beat' by Cyrov Instrumental
-Explosion Sound Effect: https://opengameart.org/content/big-explosion
-Explosion Sprite: https://opengameart.org/content/explosion
+* Explosion Sound Effect: https://opengameart.org/content/big-explosion
+* Explosion Sprite: https://opengameart.org/content/explosion
