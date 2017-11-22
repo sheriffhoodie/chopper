@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
       spaceScrollX = 0;
     }
     spaceScrollX += spaceBgVelocity;
-    
+
     ctx.drawImage(spaceBackground, -spaceScrollX, 0, spaceBgWidth, spaceBgHeight);
     ctx.drawImage(spaceBackground, canvas.width - spaceScrollX, 0, spaceBgWidth, spaceBgHeight);
   }
@@ -220,8 +220,10 @@ document.addEventListener("DOMContentLoaded", () => {
       solarScrollX = 0;
     }
     solarScrollX += solarBgVelocity;
-    ctx.drawImage(solarBackground, -solarScrollX, 0, solarBgWidth, solarBgHeight);
-    ctx.drawImage(solarBackground, canvas.width - solarScrollX, canvas.height - solarBgHeight, solarBgWidth, solarBgHeight);
+    solarBackground.onload(
+      ctx.drawImage(solarBackground, -solarScrollX, 0, solarBgWidth, solarBgHeight),
+      ctx.drawImage(solarBackground, canvas.width - solarScrollX, canvas.height - solarBgHeight, solarBgWidth, solarBgHeight)
+    );
   }
 
   function chopperSprite () {
