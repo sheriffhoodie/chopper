@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //chopper variables
   var chopper = new Image ();
-  chopper.src = "images/helicopter5.png";
+  // chopper.src = "images/helicopter5.png";
   let chopperWidth = 208;
   let chopperHeight = 62;
   let chopperXPos;
@@ -220,10 +220,10 @@ document.addEventListener("DOMContentLoaded", () => {
       solarScrollX = 0;
     }
     solarScrollX += solarBgVelocity;
-    solarBackground.onload(
-      ctx.drawImage(solarBackground, -solarScrollX, 0, solarBgWidth, solarBgHeight),
-      ctx.drawImage(solarBackground, canvas.width - solarScrollX, canvas.height - solarBgHeight, solarBgWidth, solarBgHeight)
-    );
+    // solarBackground.onload(
+      ctx.drawImage(solarBackground, -solarScrollX, 0, solarBgWidth, solarBgHeight);
+      ctx.drawImage(solarBackground, canvas.width - solarScrollX, canvas.height - solarBgHeight, solarBgWidth, solarBgHeight);
+    // );
   }
 
   function chopperSprite () {
