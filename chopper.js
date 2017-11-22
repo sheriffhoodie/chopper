@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //chopper variables
   var chopper = new Image ();
-  chopper.src = "/images/helicopter5.png";
+  chopper.src = "images/helicopter5.png";
   let chopperWidth = 208;
   let chopperHeight = 62;
   let chopperXPos;
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   var spaceBgWidth = 1170;
   var spaceBgVelocity = 12;
   var spaceBackground = new Image ();
-  spaceBackground.src = "/images/space-bkgd.jpg";
+  spaceBackground.src = "images/space-bkgd.jpg";
   let spaceScrollX;
 
   //Solar Background
@@ -60,12 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
   var solarBgWidth = 1112;
   var solarBgVelocity = 12;
   var solarBackground = new Image ();
-  solarBackground.src = "/images/sunsurface2.png";
+  solarBackground.src = "images/sunsurface2.png";
   let solarScrollX;
 
   //rock variables
   var rock = new Image ();
-  rock.src = "/images/asteroid2.png";
+  rock.src = "images/asteroid2.png";
   let rockList;
   let rockCount;
   let rockVelocity;
@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
       spaceScrollX = 0;
     }
     spaceScrollX += spaceBgVelocity;
-    console.log(spaceBackground);
+    
     ctx.drawImage(spaceBackground, -spaceScrollX, 0, spaceBgWidth, spaceBgHeight);
     ctx.drawImage(spaceBackground, canvas.width - spaceScrollX, 0, spaceBgWidth, spaceBgHeight);
   }
