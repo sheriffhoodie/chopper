@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let endTime;
   let FPSInterval;
   let elapsedTime;
+  let highScore = 0;
 
   //sounds
   var chopperSound = new Audio('sounds/helicopter.mp3');
@@ -84,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pauseTotal = 0;
     gameOver = false;
     score = 0;
+    highScore = localStorage.getItem("highScore");
     chopperXPos = 75;
     chopperYPos = 100;
     spaceScrollX = 0;
@@ -170,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keypress", (event) => {
     console.log("i am restarting");
     if (event.key === "r") {
-      restart();
+      location.reload();
     }
     // event.preventDefault();
   });
@@ -327,6 +329,21 @@ document.addEventListener("DOMContentLoaded", () => {
       return '0000' + score;
     }
   }
+  function formatHighScore () {
+    if (highScore > 99999) {
+      return '99999';
+    } else if (highScore > 9999) {
+      return highScore;
+    } else if (highScore > 999) {
+      return '0' + highScore;
+    } else if (highScore > 99) {
+      return '00' + highScore;
+    } else if (highScore > 9) {
+      return '000' + highScore;
+    } else {
+      return '0000' + highScore;
+    }
+  }
 
   function difficultyCheck () {
     // console.log(rockVelocity);
@@ -445,6 +462,9 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(function () {showGameOver();}, 30);
       pause();
     }
+    if (score > highScore) {
+      localStorage.setItem("highScore", score);
+    }
   }
 
   function showGameOver () {
@@ -456,7 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.fillText('Your Score: '+ score, 482, 290);
     ctx.fillStyle = "white";
     ctx.font = '30px Orbitron';
-    ctx.fillText('press cmd + r to restart', 417, 350);
+    ctx.fillText('press R to restart', 453, 350);
   }
 
   function update () {
@@ -476,6 +496,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.fillStyle = "white";
     ctx.font = "30px Orbitron";
     ctx.fillText('Score: '+ formatScore(score), 900, 50);
+    ctx.fillText('HI: '+ formatHighScore(highScore), 967, 80);
   }
 
   function startAnimation(FPS) {
@@ -489,8 +510,8 @@ document.addEventListener("DOMContentLoaded", () => {
         update();
         render();
       }
-  }
+    }
 
-  gameStart();
-  startAnimation(30);
+    gameStart();
+    startAnimation(30);
 });
