@@ -210,6 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
       spaceScrollX = 0;
     }
     spaceScrollX += spaceBgVelocity;
+    console.log(spaceBackground);
     ctx.drawImage(spaceBackground, -spaceScrollX, 0, spaceBgWidth, spaceBgHeight);
     ctx.drawImage(spaceBackground, canvas.width - spaceScrollX, 0, spaceBgWidth, spaceBgHeight);
   }
@@ -291,9 +292,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function collisionCheck() {
     for (var i = 0; i < rockList.length; i++) {
       if (chopperYPos + chopperHeight > rockList[i].y + 5 &&
-        chopperYPos < rockList[i].y + rockList[i].height + 5 &&
+        chopperYPos < rockList[i].y + rockList[i].height + 15 &&
         chopperXPos + chopperWidth > rockList[i].x - 5 &&
-        chopperXPos < rockList[i].x + rockList[i].width - 5) {
+        chopperXPos - 18 < rockList[i].x + rockList[i].width) {
           crash = true;
           gameOver = true;
           endGame();

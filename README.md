@@ -36,7 +36,7 @@ The game uses vanilla Javascript with HTML, CSS, and HTML Canvas for rendering w
 
 ### Credits
 
-* Music: 'Heliscope' by Jesse James
+* Music: 'Heliscope' by Jesse James,
        'OuterSpace HipHop Beat' by Cyrov Instrumental
 * Explosion Sound Effect: https://opengameart.org/content/big-explosion
 * Explosion Sprite: https://opengameart.org/content/explosion
