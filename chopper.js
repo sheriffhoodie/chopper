@@ -18,8 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
   var chopperSound = new Audio('sounds/helicopter.mp3');
   var menuMusic = new Audio('sounds/clearside-assimilator.wav');
   menuMusic.loop = true;
-  var gameMusic = new Audio('sounds/clearside-siste-viator.wav');
+  var gameMusic = new Audio('sounds/space-hiphop-beat1.mp3');
+  gameMusic.currentTime = 11;
   gameMusic.loop = true;
+  gameMusic.volume = 0.8;
   var explosionSFX = new Audio('sounds/explosion.flac');
   explosionSFX.defaultMuted = true;
   let muteButton = document.querySelector("#mute-button");
@@ -85,7 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
     pauseTotal = 0;
     gameOver = false;
     score = 0;
-    highScore = localStorage.getItem("highScore");
+    if (localStorage.getItem("highScore") === null) {
+      return 0;
+    } else {
+      highScore = localStorage.getItem("highScore");
+    }
     chopperXPos = 75;
     chopperYPos = 100;
     spaceScrollX = 0;
@@ -119,6 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
         gameMusic.play();
         gameMusic.muted = false;
         explosionSFX.muted = false;
+      } else {
+        gameMusic.play();
+        gameMusic.muted = true;
+        explosionSFX.muted = true;
       }
     if (gameState === "pause") {
       gameState = "play";
@@ -170,7 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("keypress", (event) => {
-    console.log("i am restarting");
     if (event.key === "r") {
       location.reload();
     }
@@ -178,7 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function gameStart() {
-  // console.log("i am game start");
     gameState = "pause";
     clear();
     rockVelocity = 4;
@@ -223,13 +231,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     this.update = function () {
       // if (counter === (frameSpeed - 1))
-      // console.log("HEREHEREHERE");
       currentFrame = (currentFrame + 1) % chopEndFrame;
         // counter = (counter +  1) % frameSpeed;
     };
 
     this.draw = function (x, y) {
-      // console.log("spritesheet drawing");
       let row = Math.floor(currentFrame / chopFramesPerRow);
       let col = Math.floor(currentFrame % chopFramesPerRow);
       ctx.drawImage(
@@ -251,7 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function addRock() {
-    // console.log("i am adding rock");
     let newRock = {};
     newRock.width = Math.floor(Math.random() * (140 - 80) + 80);
     newRock.height = Math.floor(Math.random() * (130 - 110) + 110);
@@ -278,7 +283,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function collisionCheck() {
-    // debugger
     for (var i = 0; i < rockList.length; i++) {
       if (chopperYPos + chopperHeight > rockList[i].y + 5 &&
         chopperYPos < rockList[i].y + rockList[i].height + 5 &&
@@ -329,6 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return '0000' + score;
     }
   }
+
   function formatHighScore () {
     if (highScore > 99999) {
       return '99999';
@@ -402,7 +407,6 @@ document.addEventListener("DOMContentLoaded", () => {
   //simplify equation with vertical velocity that decreases proportionately
   //and then increases upward velocity with accelaration, curving the flying
   function fly () {
-    // console.log("i am fly");
     if(flying && crash === false) {
       flyRate = startFlyRate;
       chopperYPos = chopperYPos - flyRate;
@@ -421,8 +425,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Defining the Explosion Sprite
-  let explosion = new Image ();
-  explosion.src = 'images/explosion-sprite2.png';
+   let explosion = new Image ();
+   explosion.src = 'images/explosion-sprite2.png';
    var spriteIndex = 0;
    var frameWidth = 64;
    var frameHeight = 64;
@@ -431,16 +435,16 @@ document.addEventListener("DOMContentLoaded", () => {
    var cols = 4;
 
    function explodeChopper() {
-       if (spriteIndex > 15) {
-           return;
-       }
-       setTimeout(function () {
-           requestAnimationFrame(explodeChopper);
-           var x = spriteIndex % (cols - 1) * frameWidth;
-           var y = parseInt(spriteIndex / (rows - 1)) * frameHeight;
-           ctx.drawImage(explosion, x, y, frameWidth, frameHeight, chopperXPos, chopperYPos - chopperHeight, 300, 300);
-           spriteIndex++;
-       }, 30
+     if (spriteIndex > 15) {
+      return;
+     }
+     setTimeout(function () {
+       requestAnimationFrame(explodeChopper);
+       var x = spriteIndex % (cols - 1) * frameWidth;
+       var y = parseInt(spriteIndex / (rows - 1)) * frameHeight;
+       ctx.drawImage(explosion, x, y, frameWidth, frameHeight, chopperXPos, chopperYPos - chopperHeight, 300, 300);
+       spriteIndex++;
+     }, 30
      );
      explosionSFX.play();
      pause();
@@ -480,6 +484,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function update () {
+    console.log(gameMusic.muted);
     increaseScore();
     borderCrashCheck();
     collisionCheck();
@@ -496,7 +501,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.fillStyle = "white";
     ctx.font = "30px Orbitron";
     ctx.fillText('Score: '+ formatScore(score), 900, 50);
-    ctx.fillText('HI: '+ formatHighScore(highScore), 967, 80);
+    ctx.fillText('HI: '+ formatHighScore(highScore), 969, 80);
   }
 
   function startAnimation(FPS) {
