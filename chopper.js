@@ -155,14 +155,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showIntro () {
-    ctx.font = '30px Orbitron';
-    ctx.fillStyle = 'white';
-    ctx.fillText('Press space bar to start', 380, 220);
-    ctx.font = '30px Orbitron';
-    ctx.fillText('Use "F" key to fly', 585-292/2, 280);
+    ctx.font = '36px Orbitron';
+    ctx.fillStyle = 'gray';
+    ctx.fillText('Welcome to Space Chopper', 333, 100);
     ctx.font = '22px Orbitron';
     ctx.fillStyle = 'orange';
-    ctx.fillText('Avoid asteroids and the top and bottom of the frame!', 270, 360);
+    ctx.fillText('Pilot the chopper as far into the asteroid field as you can!', 270, 160);
+    ctx.font = '22px Orbitron';
+    ctx.fillStyle = 'orange';
+    ctx.fillText('Avoid asteroids and the top and bottom of the frame!', 292, 190);
+    ctx.font = '30px Orbitron';
+    ctx.fillStyle = 'white';
+    ctx.fillText('Press space bar to start', 395, 250);
+    ctx.font = '30px Orbitron';
+    ctx.fillText('Use "F" key to fly', 455, 295);
   }
 
   //play/pause with spacebar
