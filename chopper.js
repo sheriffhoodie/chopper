@@ -193,6 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function gameStart() {
+    console.log("i am starting game");
     gameState = "pause";
     clear();
     rockVelocity = 4;
@@ -206,6 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function drawSpaceBackground () {
+    console.log("i am drawing spacebackground");
     if (spaceScrollX >= canvas.width) {
       spaceScrollX = 0;
     }
@@ -216,6 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function drawSolarBackground () {
+    console.log("i am drawing solar background");
     if (solarScrollX >= canvas.width) {
       solarScrollX = 0;
     }
@@ -416,6 +419,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //simplify equation with vertical velocity that decreases proportionately
   //and then increases upward velocity with accelaration, curving the flying
   function fly () {
+    console.log("i am flying");
     if(flying && crash === false) {
       flyRate = startFlyRate;
       chopperYPos = chopperYPos - flyRate;
@@ -502,6 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function render () {
+    console.log("i am rendering");
     clear();
     drawSpaceBackground();
     drawSolarBackground();
