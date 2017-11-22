@@ -6,23 +6,32 @@ Space Chopper is a 2D side-scrolling spinoff version of the classic Helicopter a
 
 There is no "end" to the game, your distance is tracked as you fly forward and is given to you as your score when you crash the chopper into an obstacle or the top or bottom edges of the screen.
 
-## Functionality & MVP
+## Functionality
 
-In the game, users will be able to:
+In the game, users can:
 
 * start, pause, and reset the game screen
 * fully control the altitude of the helicopter as described above and guide it through the maze of floating obstacles
 * see their distance score updating in real time, and presented to them at the end
+* view the high score, stored locally
+* enjoy sound effects and background music during the menu and gameplay with a mute button option
 
 
 ## Architecture and Technologies (TBD)
 
-The game will use vanilla Javascript with HTML, CSS, and Canvas for rendering with the SoundManager2 Library for sound effects and background music.
+The game uses vanilla Javascript with HTML, CSS, and HTML Canvas for rendering with HTML5 Audio for sound effects and background music interface and playback
 
 The main entry file will hold all logic for gameplay, leaving the canvas structure and styling to separate HTML and CSS files.
 
-## Bonus Features:
+## Future Directions:
 
-* Save high scores to a database with a username, display top 5 high scores before game start and after game end.
+* Save global high scores to a database with a username, display top 5 high scores before game start and after game end.
 * Create different difficulty modes (easy and hard) that the user can choose from before play.
-* Add music, with option for muting before, during, and after game play
+* Create playlist of shorter tracks that rotate through automatically.
+
+Credits:
+
+Music: 'Heliscope' by Jesse James
+       'OuterSpace HipHop Beat' by Cyrov Instrumental
+Explosion Sound Effect: https://opengameart.org/content/big-explosion
+Explosion Sprite: https://opengameart.org/content/explosion
