@@ -24,7 +24,7 @@ In the game, users can:
 
 ### Architecture and Technologies
 
-The game uses vanilla Javascript with HTML, CSS, and HTML Canvas for rendering with HTML5 Audio for sound effects and background music interface and playback. The main entry file holds all gameplay logic, leaving the canvas structure and styling to separate HTML and CSS files.
+The game uses vanilla JavaScript with HTML, CSS, and HTML Canvas for rendering with HTML5 Audio for sound effects and background music interface and playback. The main entry file holds all gameplay logic, leaving the canvas structure and styling to separate HTML and CSS files.
 
 ### Future Directions
 

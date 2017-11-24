@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //sounds
   var chopperSound = new Audio('sounds/helicopter.mp3');
-  var menuMusic = new Audio('sounds/clearside-assimilator.wav');
+  var menuMusic = new Audio('https://s3.us-east-2.amazonaws.com/chopper-dev/sounds/clearside-assimilator.wav');
   menuMusic.loop = true;
   var gameMusic = new Audio('sounds/space-hiphop-beat1.mp3');
   gameMusic.currentTime = 11;
@@ -52,7 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
   var spaceBgWidth = 1170;
   var spaceBgVelocity = 12;
   var spaceBackground = new Image ();
-  spaceBackground.src = "./images/space-bkgd.jpg";
+  var image = document.images[0];
+  spaceBackground.onload = function(){
+    spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
+  };
+  // spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
   let spaceScrollX;
 
   //Solar Background
@@ -60,12 +64,12 @@ document.addEventListener("DOMContentLoaded", () => {
   var solarBgWidth = 1112;
   var solarBgVelocity = 12;
   var solarBackground = new Image ();
-  solarBackground.src = "./images/sunsurface2.png";
+  solarBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/sunsurface2.png";
   let solarScrollX;
 
   //rock variables
   var rock = new Image ();
-  rock.src = "./images/asteroid2.png";
+  rock.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/asteroid2.png";
   let rockList;
   let rockCount;
   let rockVelocity;
@@ -230,16 +234,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function chopperSprite () {
-    let path = 'images/helicopter-spritesheet.png';
+    let path = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/helicopter-spritesheet.png";
     let chopFrameWidth = 423;
     let chopFrameHeight = 150;
     let chopFrameSpeed = 3;
     let chopEndFrame = 3;
-    let image = new Image ();
+    let chopperImg = new Image ();
     let counter = 0;
-    image.src = path;
+    chopperImg.src = path;
     let chopFramesPerRow;
-    chopFramesPerRow = Math.floor(image.width / chopFrameWidth);
+    chopFramesPerRow = Math.floor(chopperImg.width / chopFrameWidth);
 
     this.update = function () {
       // if (counter === (frameSpeed - 1))
@@ -251,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let row = Math.floor(currentFrame / chopFramesPerRow);
       let col = Math.floor(currentFrame % chopFramesPerRow);
       ctx.drawImage(
-        image,
+        chopperImg,
         col * chopFrameWidth, row * chopFrameHeight,
         chopFrameWidth, chopFrameHeight, x, y,
         208, 62);
@@ -324,7 +328,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function increaseScore() {
-    // console.log("i am increasing the score");
     endTime = Date.now();
     elapsedTime = endTime - startTime;
     score = Math.floor((endTime - startTime - pauseTotal) / 400);
@@ -363,7 +366,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function difficultyCheck () {
-    // console.log(rockVelocity);
     //move to Level 2
     if (score < 50) {
       rockVelocity = 4;
@@ -497,7 +499,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function update () {
-    console.log(gameMusic.muted);
     increaseScore();
     borderCrashCheck();
     collisionCheck();
