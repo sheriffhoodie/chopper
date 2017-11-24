@@ -297,9 +297,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function collisionCheck() {
     for (var i = 0; i < rockList.length; i++) {
       if (chopperYPos + chopperHeight > rockList[i].y + 5 &&
-        chopperYPos < rockList[i].y + rockList[i].height + 15 &&
+        chopperYPos < rockList[i].y + rockList[i].height - 15 &&
         chopperXPos + chopperWidth > rockList[i].x - 5 &&
-        chopperXPos - 18 < rockList[i].x + rockList[i].width) {
+        chopperXPos + 50 < rockList[i].x + rockList[i].width) {
           crash = true;
           gameOver = true;
           endGame();
