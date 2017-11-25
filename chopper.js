@@ -53,10 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
   var spaceBgVelocity = 12;
   var spaceBackground = new Image ();
   var image = document.images[0];
-  spaceBackground.onload = function(){
-    spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
-  };
-  // spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
+  // document.onload = function(){
+  //   spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
+  // };
+  spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
   let spaceScrollX;
 
   //Solar Background
@@ -211,7 +211,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function drawSpaceBackground () {
-    console.log("i am drawing spacebackground");
+    console.log(spaceBackground.complete);
+    // debugger
     if (spaceScrollX >= canvas.width) {
       spaceScrollX = 0;
     }
@@ -222,7 +223,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function drawSolarBackground () {
-    console.log("i am drawing solar background");
+    console.log(solarBackground.complete);
+    // debugger
     if (solarScrollX >= canvas.width) {
       solarScrollX = 0;
     }
@@ -252,6 +254,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     this.draw = function (x, y) {
+      console.log("chopper:"); 
+      console.log(chopperImg.complete);
       let row = Math.floor(currentFrame / chopFramesPerRow);
       let col = Math.floor(currentFrame % chopFramesPerRow);
       ctx.drawImage(
@@ -421,7 +425,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //simplify equation with vertical velocity that decreases proportionately
   //and then increases upward velocity with accelaration, curving the flying
   function fly () {
-    console.log("i am flying");
+    // console.log("i am flying");
     if(flying && crash === false) {
       flyRate = startFlyRate;
       chopperYPos = chopperYPos - flyRate;
@@ -450,6 +454,7 @@ document.addEventListener("DOMContentLoaded", () => {
    var cols = 4;
 
    function explodeChopper() {
+     console.log(explosion.complete);
      if (spriteIndex > 15) {
       return;
      }
