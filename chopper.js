@@ -53,10 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
   var spaceBgVelocity = 12;
   var spaceBackground = new Image ();
   var image = document.images[0];
-  // document.onload = function(){
-  //   spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
-  // };
-  spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
+  document.onload = function(){
+    spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
+  };
+  // spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
   let spaceScrollX;
 
   //Solar Background
