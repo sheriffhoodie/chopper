@@ -213,6 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function drawSpaceBackground () {
+    spaceBackground.src = "images/space-bkgd.jpg";
     console.log(spaceBackground.complete);
     debugger
     if (spaceScrollX >= canvas.width) {
