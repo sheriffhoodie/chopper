@@ -226,6 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function drawSolarBackground () {
+    solarBackground.src = "images/sunsurface2.png";
     console.log(solarBackground.complete);
     debugger
     if (solarScrollX >= canvas.width) {
