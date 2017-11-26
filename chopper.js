@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   var spaceBackground = new Image ();
   var image = document.images[0];
   document.onload = function(){
-    spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
+    spaceBackground.src = "images/space-bkgd.jpg";
   };
   // spaceBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/space-bkgd.jpg";
   let spaceScrollX;
@@ -64,7 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
   var solarBgWidth = 1112;
   var solarBgVelocity = 12;
   var solarBackground = new Image ();
-  solarBackground.src = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/sunsurface2.png";
+  document.onload = function() {
+    solarBackground.src = "images/sunsurface2.png";
+  };
   let solarScrollX;
 
   //rock variables
