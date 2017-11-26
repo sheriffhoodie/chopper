@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function gameStart() {
-    console.log("i am starting game");
+    // console.log("i am starting game");
     gameState = "pause";
     clear();
     rockVelocity = 4;
@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     this.draw = function (x, y) {
-      console.log("chopper:"); 
+      // console.log("chopper:");
       console.log(chopperImg.complete);
       let row = Math.floor(currentFrame / chopFramesPerRow);
       let col = Math.floor(currentFrame % chopFramesPerRow);
@@ -454,7 +454,7 @@ document.addEventListener("DOMContentLoaded", () => {
    var cols = 4;
 
    function explodeChopper() {
-     console.log(explosion.complete);
+    //  console.log(explosion.complete);
      if (spriteIndex > 15) {
       return;
      }
@@ -512,7 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function render () {
-    console.log("i am rendering");
+    // console.log("i am rendering");
     clear();
     drawSpaceBackground();
     drawSolarBackground();
