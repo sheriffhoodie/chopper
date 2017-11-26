@@ -106,14 +106,17 @@ document.addEventListener("DOMContentLoaded", () => {
     rockCount = 0;
     addRock();
     ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
-    ctx.drawImage(spaceBackground, 0, 0, spaceBgWidth, spaceBgHeight);
+    setTimeout(function() { 
+      ctx.drawImage(spaceBackground, 0, 0, spaceBgWidth, spaceBgHeight);
+    }, 30);
     ctx.drawImage(solarBackground, 0, canvas.height - solarBgHeight * .75, canvas.width, solarBgHeight);
     menuMusic.play();
     gameMusic.preload = "auto";
   }
 
   window.onload = function() {
-    setup();
+    setTimeout(function() {setup();}, 30);
+    // setup();
     setTimeout(function () {showIntro();}, 30);
   };
 
@@ -204,8 +207,10 @@ document.addEventListener("DOMContentLoaded", () => {
     clear();
     rockVelocity = 4;
     rockInterval = 140;
-    drawSpaceBackground();
-    drawSolarBackground();
+    // setTimeout(function() {
+      drawSpaceBackground();
+      drawSolarBackground();
+    // }, 100);
     drawChopper();
     rockList = new Array();
     drawRocks();
