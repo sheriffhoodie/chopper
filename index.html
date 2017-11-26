@@ -9,11 +9,11 @@
     <link rel="shortcut icon" href="#" />
     <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
     <script type="text/javascript">
-      let sources = ["images/space-bkgd.jpg", "images/sunsurface2.png", "asteroid2.png", "helicopter-spritesheet.png"];
+      let sources = ["images/space-bkgd.jpg", "images/sunsurface2.png", "images/asteroid2.png", "images/helicopter-spritesheet.png"];
 
       function preload(sources) {
         var images = [];
-        for (i = 0, i < sources.length; ++i) {
+        for (let i = 0; i < sources.length; ++i) {
           images[i] = new Image();
           images[i].src = sources[i];
         }
