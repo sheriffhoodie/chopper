@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function drawSpaceBackground () {
     console.log(spaceBackground.complete);
-    // debugger
+    debugger
     if (spaceScrollX >= canvas.width) {
       spaceScrollX = 0;
     }
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function drawSolarBackground () {
     console.log(solarBackground.complete);
-    // debugger
+    debugger
     if (solarScrollX >= canvas.width) {
       solarScrollX = 0;
     }
@@ -256,6 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
     this.draw = function (x, y) {
       // console.log("chopper:");
       console.log(chopperImg.complete);
+      debugger
       let row = Math.floor(currentFrame / chopFramesPerRow);
       let col = Math.floor(currentFrame % chopFramesPerRow);
       ctx.drawImage(
