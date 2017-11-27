@@ -106,9 +106,9 @@ document.addEventListener("DOMContentLoaded", () => {
     rockCount = 0;
     addRock();
     ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
-    setTimeout(function() { 
+    // setTimeout(function() { 
       ctx.drawImage(spaceBackground, 0, 0, spaceBgWidth, spaceBgHeight);
-    }, 30);
+    // }, 30);
     ctx.drawImage(solarBackground, 0, canvas.height - solarBgHeight * .75, canvas.width, solarBgHeight);
     menuMusic.play();
     gameMusic.preload = "auto";
