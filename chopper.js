@@ -236,6 +236,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function drawSpaceBackground () {
     spaceBackground.src = "images/space-bkgd.jpg";
+    debugger
+    console.log("spaceBackground:");
     console.log(spaceBackground.complete);
     if (spaceScrollX >= canvas.width) {
       spaceScrollX = 0;
@@ -248,6 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function drawSolarBackground () {
     solarBackground.src = "images/sunsurface2.png";
+    console.log("solarBackground:");
     console.log(solarBackground.complete);
     if (solarScrollX >= canvas.width) {
       solarScrollX = 0;
@@ -260,14 +263,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function chopperSprite () {
-    let path = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/helicopter-spritesheet.png";
     let chopFrameWidth = 423;
     let chopFrameHeight = 150;
     let chopFrameSpeed = 3;
     let chopEndFrame = 3;
     let chopperImg = new Image ();
+    chopperImg.src = "images/helicopter-spritesheet.png";
+    // let path = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/helicopter-spritesheet.png";
     let counter = 0;
-    chopperImg.src = path;
     let chopFramesPerRow;
     chopFramesPerRow = Math.floor(chopperImg.width / chopFrameWidth);
 
@@ -278,6 +281,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     this.draw = function (x, y) {
+      debugger
+      console.log("chopperImg:");
       console.log(chopperImg.complete);
       let row = Math.floor(currentFrame / chopFramesPerRow);
       let col = Math.floor(currentFrame % chopFramesPerRow);
