@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
   explosionSFX.muted = true;
   let muteCheck = true;
   muteButton.addEventListener('click', () => {
-    // debugger
     if (event.clientX !== 0) {
       muteCheck = !muteCheck;
       gameMusic.muted = !gameMusic.muted;
@@ -236,9 +235,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function drawSpaceBackground () {
     spaceBackground.src = "images/space-bkgd.jpg";
-    debugger
-    console.log("spaceBackground:");
-    console.log(spaceBackground.complete);
+    // console.log("spaceBackground:");
+    // console.log(spaceBackground.complete);
     if (spaceScrollX >= canvas.width) {
       spaceScrollX = 0;
     }
@@ -281,9 +279,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     this.draw = function (x, y) {
-      debugger
-      console.log("chopperImg:");
-      console.log(chopperImg.complete);
+      // console.log("chopperImg:");
+      // console.log(chopperImg.complete);
       let row = Math.floor(currentFrame / chopFramesPerRow);
       let col = Math.floor(currentFrame % chopFramesPerRow);
       ctx.drawImage(
