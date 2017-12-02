@@ -36,6 +36,11 @@ document.addEventListener("DOMContentLoaded", () => {
       gameMusic.muted = !gameMusic.muted;
       menuMusic.muted = !menuMusic.muted;
       explosionSFX.muted = !explosionSFX.muted;
+      if (gameMusic.muted === true) {
+        localStorage.setItem("gameMusic.muted", "true");
+      } else {
+        localStorage.setItem("gameMusic.muted", "false");
+      }
     }
   });
 
@@ -98,6 +103,18 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       highScore = localStorage.getItem("highScore");
     }
+    var muted = localStorage.getItem("gameMusic.muted");
+    if (muted === true) {
+      muteCheck = true;
+      gameMusic.muted = true;
+      menuMusic.muted = true;
+      explosionSFX.muted = true;
+    } else {
+      muteCheck = false;
+      gameMusic.muted = false;
+      menuMusic.muted = false;
+      explosionSFX.muted = false;
+    }
     chopperXPos = 75;
     chopperYPos = 100;
     spaceScrollX = 0;
@@ -106,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     rockCount = 0;
     addRock();
     ctx.drawImage(chopper, chopperXPos, chopperYPos, chopperWidth, chopperHeight);
-    // setTimeout(function() { 
+    // setTimeout(function() {
       ctx.drawImage(spaceBackground, 0, 0, spaceBgWidth, spaceBgHeight);
     // }, 30);
     ctx.drawImage(solarBackground, 0, canvas.height - solarBgHeight * .75, canvas.width, solarBgHeight);
@@ -115,8 +132,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.onload = function() {
-    setTimeout(function() {setup();}, 30);
-    // setup();
+    // setTimeout(function() {setup();}, 30);
+    setup();
     setTimeout(function () {showIntro();}, 30);
   };
 
@@ -173,11 +190,11 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.font = '22px Orbitron';
     ctx.fillStyle = 'orange';
     ctx.fillText('Avoid asteroids and the top and bottom of the frame!', 272, 190);
-    ctx.font = '30px Orbitron';
     ctx.fillStyle = 'white';
-    ctx.fillText('Press space bar to start', 375, 250);
     ctx.font = '30px Orbitron';
-    ctx.fillText('Use "F" key to fly', 435, 295);
+    ctx.fillText('Use "F" key to fly', 435, 250);
+    ctx.font = '30px Orbitron';
+    ctx.fillText('Press space bar to start', 375, 295);
   }
 
   //play/pause with spacebar
@@ -220,7 +237,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function drawSpaceBackground () {
     spaceBackground.src = "images/space-bkgd.jpg";
     console.log(spaceBackground.complete);
-    debugger
     if (spaceScrollX >= canvas.width) {
       spaceScrollX = 0;
     }
@@ -233,7 +249,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function drawSolarBackground () {
     solarBackground.src = "images/sunsurface2.png";
     console.log(solarBackground.complete);
-    debugger
     if (solarScrollX >= canvas.width) {
       solarScrollX = 0;
     }
@@ -263,9 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     this.draw = function (x, y) {
-      // console.log("chopper:");
       console.log(chopperImg.complete);
-      debugger
       let row = Math.floor(currentFrame / chopFramesPerRow);
       let col = Math.floor(currentFrame % chopFramesPerRow);
       ctx.drawImage(
@@ -420,14 +433,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.addEventListener('keydown', (event) => {
-    // console.log("i am flying - keydown");
     if (event.keyCode === 70) {
       flying = true;
     }
   });
 
   document.addEventListener('keyup', (event) => {
-    // console.log("i am not flying - keyup");
     if (event.keyCode === 70) {
       flying = false;
     }
@@ -435,7 +446,6 @@ document.addEventListener("DOMContentLoaded", () => {
   //simplify equation with vertical velocity that decreases proportionately
   //and then increases upward velocity with accelaration, curving the flying
   function fly () {
-    // console.log("i am flying");
     if(flying && crash === false) {
       flyRate = startFlyRate;
       chopperYPos = chopperYPos - flyRate;
@@ -480,16 +490,6 @@ document.addEventListener("DOMContentLoaded", () => {
      pause();
    }
 
-  // function explodeChopper() {
-  //   if (crash === true) {
-  //     chopper.src = "images/explosion1.png";
-  //     chopperHeight = 483 * 0.72;
-  //     chopperWidth = 726 * 0.72;
-  //     setTimeout(function () {ctx.drawImage(chopper, chopperXPos - chopperWidth/4, chopperYPos - chopperHeight/2, chopperWidth, chopperHeight);}, 29);
-  //     explosionSFX.play();
-  //   }
-  // }
-
   function endGame() {
     if (gameOver === true) {
       explodeChopper();
@@ -498,6 +498,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (score > highScore) {
       localStorage.setItem("highScore", score);
+    }
+    if (gameMusic.muted) {
+      localStorage.setItem("gameMusic.muted", "true");
+    } else {
+      localStorage.setItem("gameMusic.muted", "false");
     }
   }
 
