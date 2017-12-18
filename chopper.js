@@ -548,11 +548,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function animate() {
     requestAnimationFrame(animate);
-      if (gameState !== "pause") {
-        update();
-        render();
-      }
+    if (gameState !== "pause") {
+      update();
+      render();
     }
+  }
 
     gameStart();
     startAnimation(30);
