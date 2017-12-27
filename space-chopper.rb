@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const canvas = document.querySelector("canvas");
+  const canvas = document.querySelector("canvas-bg");
   const ctx = canvas.getContext('2d');
 
   //Global Variables

@@ -110,7 +110,7 @@ var Game = function () {
   function Game() {
     _classCallCheck(this, Game);
 
-    this.canvas = document.querySelector("canvas");
+    this.canvas = document.querySelector('canvas');
     this.ctx = this.canvas.getContext('2d');
     this.canvasHeight = 500;
     this.canvasWidth = 1170;
@@ -125,15 +125,13 @@ var Game = function () {
     this.rocks = [];
     this.currentFrame = 0;
     this.highScore = 0;
-    this.gameState = "pause";
+    this.gameState = "play";
     this.pauseTotal = 0;
     this.pauseStart = undefined;
     this.startTime = undefined;
     this.endTime = undefined;
     this.elapsedTime = undefined;
     Util.keyboardListeners(this);
-    this.ctx.drawImage(this.chopper, this.chopper.XPos, this.chopper.YPos, this.chopper.width, this.chopper.height);
-    this.ctx.drawImage(this.spacebg, 0, 0, this.spacebg.width, this.spacebg.height);
   }
 
   // Game State Modes
@@ -169,7 +167,7 @@ var Game = function () {
     key: 'run',
     value: function run() {
       this.render();
-      _rock2.default.addRock(this.canvas);
+      // Rock.addRock(this.canvas);
     }
   }, {
     key: 'resetGame',
@@ -220,8 +218,8 @@ var Game = function () {
     key: 'render',
     value: function render() {
       if (this.gameState !== "pause") {
-        this.spacebg.render();
-        this.clear();
+        this.spacebg.render(this.ctx);
+        // this.clear();
         if (this.showTitles === true) {
           this.showIntro();
         } else {
@@ -782,7 +780,7 @@ var spaceBackground = function () {
     this.spaceBkgd = images.spaceBackground;
     this.height = 500;
     this.width = 1170;
-    this.spaceBgVelocity = 12;
+    this.spaceBgVelocity = 10;
     this.spaceScrollX = 0;
     this.solarBgHeight = 220;
     this.solarBgWidth = 1112;
