@@ -3,7 +3,7 @@
 
 [Live Link!](https://sheriffhoodie.github.io/space-chopper/)
 
-![Gameplay Gif](images/space-chopper.gif)
+![Gameplay Gif](assets/images/space-chopper.gif)
 
 ### Background
 
