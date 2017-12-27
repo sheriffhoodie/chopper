@@ -146,6 +146,8 @@ var Game = function () {
   }, {
     key: 'play',
     value: function play() {
+      _sounds2.default.menuMusic.pause();
+      _sounds2.default.gameMusic.play();
       if (this.startTime === undefined) {
         this.startTime = Date.now();
       }
@@ -160,6 +162,7 @@ var Game = function () {
     key: 'pause',
     value: function pause() {
       if (this.gameState === "play") {
+        _sounds2.default.gameMusic.pause();
         this.gameState = "pause";
         this.pauseStart = Date.now();
       }
@@ -408,7 +411,9 @@ Object.defineProperty(exports, "__esModule", {
 // import {Howl} from 'howler';
 
 var soundFX = {
-  explosion: new Audio('./assets/sounds/explosion.flac')
+  explosion: new Audio('./assets/sounds/explosion.flac'),
+  menuMusic: new Audio('./assets/sounds/clearside-assimilator.wav'),
+  gameMusic: new Audio('./assets/sounds/space-hiphop-beat2.mp3')
 };
 
 exports.default = soundFX;
@@ -427,7 +432,6 @@ var keyboardListeners = exports.keyboardListeners = function keyboardListeners(g
   document.addEventListener("keypress", function (event) {
     switch (event.keyCode) {
       case 32:
-        console.log("space bar was pressed");
         event.preventDefault();
         if (game.gameOver !== true) {
           if (game.gameState === "pause") {
@@ -600,29 +604,31 @@ var settings = {
   muted: true,
   muteButton: document.querySelector("#mute-button")
 };
-// menuMusic.muted = true;
-// gameMusic.muted = true;
-
 // import {Howl} from 'howler';
+
+_sounds2.default.menuMusic.muted = true;
+_sounds2.default.gameMusic.muted = true;
 _sounds2.default.explosion.muted = true;
-
-// Howler.mute(settings.muted);
-// const gameMusic = new Howl({
-//   autoplay: true,
-//   loop: true,
-//   src: './assets/sounds/space-hiphop-beat1.mp3'
-// });
-
-// const menuMusic = new Howl({
-//   autoplay: false,
-//   loop: true,
-//   src: './assets/sounds/clearside-assimilator.mp3'
-// });
-// menuMusic.play();
+_sounds2.default.menuMusic.loop = true;
+_sounds2.default.gameMusic.currentTime = 11;
+_sounds2.default.gameMusic.loop = true;
+_sounds2.default.gameMusic.volume = 0.8;
+var muteCheck = true;
+_sounds2.default.menuMusic.play();
 
 settings.muteButton.addEventListener('click', function () {
   settings.muted = !settings.muted;
-  // Howler.mute(settings.muted);
+  if (event.clientX !== 0) {
+    muteCheck = !muteCheck;
+    _sounds2.default.gameMusic.muted = !_sounds2.default.gameMusic.muted;
+    _sounds2.default.menuMusic.muted = !_sounds2.default.menuMusic.muted;
+    _sounds2.default.explosion.muted = !_sounds2.default.explosion.muted;
+    if (_sounds2.default.gameMusic.muted === true) {
+      localStorage.setItem("gameMusic.muted", "true");
+    } else {
+      localStorage.setItem("gameMusic.muted", "false");
+    }
+  }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
