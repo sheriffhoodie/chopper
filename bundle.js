@@ -125,7 +125,8 @@ var Game = function () {
     this.rocks = [];
     this.currentFrame = 0;
     this.highScore = 0;
-    this.gameState = "play";
+    this.gameState = "pause";
+    this.showIntro();
     this.pauseTotal = 0;
     this.pauseStart = undefined;
     this.startTime = undefined;
@@ -167,7 +168,6 @@ var Game = function () {
     key: 'run',
     value: function run() {
       this.render();
-      // Rock.addRock(this.canvas);
     }
   }, {
     key: 'resetGame',
@@ -226,7 +226,6 @@ var Game = function () {
           this.renderGame();
         }
       }
-      // drawSolarBackground();
       this.ctx.fillStyle = "white";
       this.ctx.font = "30px Orbitron";
       this.ctx.fillText('Score: ' + Util.formatScore(this.score), 900, 50);
@@ -238,15 +237,16 @@ var Game = function () {
     value: function renderGame() {
       this.clear();
       this.chopper.render(this.ctx, this.chopper.XPos, this.chopper.YPos);
-      _rock2.default.drawRocks(this.ctx);
+      var rocks = new _rock2.default(this.ctx);
+      // Rock.drawRocks(this.ctx);
       this.chopper.fly();
       this.update();
     }
   }, {
     key: 'collisionCheck',
     value: function collisionCheck() {
-      for (var i = 0; i < this.rockList.length; i++) {
-        if (this.chopper.YPos + this.chopper.height > this.rockList[i].y + 5 && this.chopper.YPos < this.rockList[i].y + this.rockList[i].height - 15 && this.chopper.XPos + this.chopper.width > this.rockList[i].x - 5 && this.chopper.XPos + 50 < this.rockList[i].x + this.rockList[i].width) {
+      for (var i = 0; i < this.rocks.length; i++) {
+        if (this.chopper.YPos + this.chopper.height > this.rocks[i].y + 5 && this.chopper.YPos < this.rocks[i].y + this.rocks[i].height - 15 && this.chopper.XPos + this.chopper.width > this.rocks[i].x - 5 && this.chopper.XPos + 50 < this.rocks[i].x + this.rocks[i].width) {
           this.chopper.crash = true;
           this.gameOver = true;
           this.endGame();
@@ -256,15 +256,15 @@ var Game = function () {
   }, {
     key: 'borderCrashCheck',
     value: function borderCrashCheck(chopper) {
-      if (chopper.flying) {
-        if (chopper.YPos <= 0) {
-          chopper.crash = true;
+      if (this.chopper.flying) {
+        if (this.chopper.YPos <= 0) {
+          this.chopper.crash = true;
           this.gameOver = true;
           this.endGame();
         }
       } else {
-        if (chopper.YPos + chopper.height > this.canvas.height) {
-          chopper.crash = true;
+        if (this.chopper.YPos + this.chopper.height > this.canvas.height) {
+          this.chopper.crash = true;
           this.gameOver = true;
           this.endGame();
         }
@@ -316,12 +316,13 @@ var Game = function () {
     value: function endGame() {
       if (this.gameOver === true) {
         _sounds2.default.explosion.play();
-        this.explosion.render();
-        // setTimeout(function () {
+        this.explosion.render(this.ctx, this.chopper);
         this.showGameEnd = true;
         this.renderGameOver();
-        // }, 30);
-        this.pause();
+        var that = this;
+        setTimeout(function () {
+          that.pause();
+        }, 150);
       }
       if (this.score > this.highScore) {
         localStorage.setItem("highScore", this.score);
@@ -425,13 +426,16 @@ Object.defineProperty(exports, "__esModule", {
 var keyboardListeners = exports.keyboardListeners = function keyboardListeners(game) {
   document.addEventListener("keypress", function (event) {
     switch (event.keyCode) {
-      case event.keyCode === 32 && game.gameOver !== true:
+      case 32:
+        console.log("space bar was pressed");
         event.preventDefault();
-        if (game.gameState === "pause") {
-          game.showTitles = false;
-          game.play();
-        } else if (game.gameState === "play") {
-          game.pause();
+        if (game.gameOver !== true) {
+          if (game.gameState === "pause") {
+            game.showTitles = false;
+            game.play();
+          } else if (game.gameState === "play") {
+            game.pause();
+          }
         }
         break;
       case 82:
@@ -476,6 +480,12 @@ var _util = __webpack_require__(3);
 
 var Util = _interopRequireWildcard(_util);
 
+var _imageable = __webpack_require__(1);
+
+var _imageable2 = _interopRequireDefault(_imageable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -484,6 +494,8 @@ var Chopper = function () {
   function Chopper() {
     _classCallCheck(this, Chopper);
 
+    var images = new _imageable2.default();
+    this.chopper = images.chopperImg;
     this.width = 208;
     this.height = 62;
     this.XPos = 75;
@@ -517,7 +529,7 @@ var Chopper = function () {
       this.update();
       var row = Math.floor(this.currentFrame / this.chopFramesPerRow);
       var col = Math.floor(this.currentFrame % this.chopFramesPerRow);
-      ctx.drawImage(this, col * this.chopFrameWidth, row * this.chopFrameHeight, this.chopFrameWidth, this.chopFrameHeight, this.XPos, this.YPos, 208, 62);
+      ctx.drawImage(this.chopper, col * this.chopFrameWidth, row * this.chopFrameHeight, this.chopFrameWidth, this.chopFrameHeight, this.XPos, this.YPos, 208, 62);
       this.fly();
     }
 
@@ -639,10 +651,6 @@ var _imageable2 = _interopRequireDefault(_imageable);
 
 var _game = __webpack_require__(0);
 
-var _chopper = __webpack_require__(4);
-
-var _chopper2 = _interopRequireDefault(_chopper);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -663,16 +671,14 @@ var Explosion = function () {
 
   _createClass(Explosion, [{
     key: 'render',
-    value: function render() {
+    value: function render(ctx, chopper) {
       if (this.spriteIndex > 15) {
         return;
       }
-      setTimeout(function () {
-        var x = this.spriteIndex % (this.cols - 1) * this.frameWidth;
-        var y = parseInt(this.spriteIndex / (this.rows - 1)) * this.frameHeight;
-        _game.ctx.drawImage(this.explosion, x, y, this.frameWidth, this.frameHeight, _chopper2.default.XPos, _chopper2.default.YPos - _chopper2.default.height, 300, 300);
-        this.spriteIndex++;
-      }, 30);
+      var x = this.spriteIndex % (this.cols - 1) * this.frameWidth;
+      var y = parseInt(this.spriteIndex / (this.rows - 1)) * this.frameHeight;
+      ctx.drawImage(this.explosion, x, y, this.frameWidth, this.frameHeight, chopper.XPos, chopper.YPos - chopper.height, 300, 300);
+      this.spriteIndex++;
     }
   }]);
 
@@ -703,7 +709,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Rock = function () {
-  function Rock() {
+  function Rock(ctx) {
     _classCallCheck(this, Rock);
 
     var images = new _imageable2.default();
@@ -712,16 +718,17 @@ var Rock = function () {
     this.rockCount = 0;
     this.rockVelocity = 4;
     this.rockInterval = 140;
+    this.drawRocks(ctx);
   }
 
   _createClass(Rock, [{
     key: 'addRock',
-    value: function addRock(canvas) {
+    value: function addRock(game) {
       var newRock = {};
       newRock.width = Math.floor(Math.random() * (140 - 80) + 80);
       newRock.height = Math.floor(Math.random() * (130 - 110) + 110);
-      newRock.x = canvas.width;
-      newRock.y = Math.floor(Math.random() * canvas.height - newRock.height);
+      newRock.x = game.canvasWidth;
+      newRock.y = Math.floor(Math.random() * game.canvasHeight - newRock.height);
       this.rockList.push(newRock);
     }
   }, {

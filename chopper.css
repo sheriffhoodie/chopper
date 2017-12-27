@@ -83,9 +83,9 @@ body {
   line-height: 1.5;
 }
 
-#canvas-fg {
-  position: absolute;
-  z-index: 1;
+#mute-button:hover {
+  color: aqua;
+  border: 1px solid aqua;
 }
 
 button {
