@@ -115,7 +115,7 @@ var Game = function () {
     this.canvasHeight = 500;
     this.canvasWidth = 1170;
     this.score = 0;
-    this.highScore = parseInt(localStorage.getItem("highScore") || 0);
+    this.highScore = localStorage.getItem("highScore") || 0;
     this.chopper = new _chopper2.default();
     this.spacebg = new _background2.default();
     this.explosion = new _explosion2.default();
@@ -137,13 +137,7 @@ var Game = function () {
 
   // Game State Modes
 
-
   _createClass(Game, [{
-    key: 'clear',
-    value: function clear() {
-      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-    }
-  }, {
     key: 'play',
     value: function play() {
       _sounds2.default.menuMusic.pause();
@@ -185,6 +179,11 @@ var Game = function () {
       this.showGameEnd = false;
     }
   }, {
+    key: 'clearScreen',
+    value: function clearScreen() {
+      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    }
+  }, {
     key: 'increaseScore',
     value: function increaseScore() {
       this.endTime = Date.now();
@@ -194,6 +193,17 @@ var Game = function () {
   }, {
     key: 'showIntro',
     value: function showIntro() {
+      var spacebg = new Image();
+      var solarbg = new Image();
+      var that = this;
+      // spacebg.addEventListener('load', function () {
+      //   that.ctx.drawImage(spacebg, 0, 0, that.spacebg.width, that.spacebg.height);
+      // });
+      solarbg.addEventListener('load', function () {
+        that.ctx.drawImage(solarbg, 0, that.canvas.height - 200, 1312, 200);
+      }, false);
+      spacebg.src = './assets/images/space-bkgd.jpg';
+      solarbg.src = './assets/images/sunsurface2.png';
       this.ctx.font = '36px Orbitron';
       this.ctx.fillStyle = 'gray';
       this.ctx.fillText('Welcome to Space Chopper', 313, 100);
@@ -221,8 +231,7 @@ var Game = function () {
     key: 'render',
     value: function render() {
       if (this.gameState !== "pause") {
-        this.spacebg.render(this.ctx);
-        // this.clear();
+        this.clearScreen();
         if (this.showTitles === true) {
           this.showIntro();
         } else {
@@ -238,11 +247,10 @@ var Game = function () {
   }, {
     key: 'renderGame',
     value: function renderGame() {
-      this.clear();
-      this.chopper.render(this.ctx, this.chopper.XPos, this.chopper.YPos);
+      this.spacebg.render(this.ctx);
+      this.chopper.render(this.ctx);
       var rocks = new _rock2.default(this.ctx);
       // Rock.drawRocks(this.ctx);
-      this.chopper.fly();
       this.update();
     }
   }, {
@@ -382,7 +390,7 @@ var ImageableSingleton = function ImageableSingleton() {
 
     // chopper
     this.chopperImg = new Image();
-    this.chopperImg.src = './assets/images/helicopter-spritesheet.png';
+    // this.chopperImg.src = './assets/images/helicopter-spritesheet.png';
 
     // rock
     this.rockImg = new Image();
@@ -443,6 +451,7 @@ var keyboardListeners = exports.keyboardListeners = function keyboardListeners(g
         }
         break;
       case 82:
+        console.log("trying to reset");
         game.resetGame();
         break;
       default:
@@ -492,6 +501,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Chopper = function () {
@@ -516,25 +527,67 @@ var Chopper = function () {
     this.gravity = 1.2;
     this.termVel = 10;
     this.counter = 0;
+    this.rows = 4;
+    this.cols = 1;
+    this.spriteIndex = 0;
     this.chopFramesPerRow = Math.floor(this.width / this.chopFrameWidth);
+    this.sprites = [];
+    for (var i = 0; i <= 3; i++) {
+      this.sprites.push([this.chopper, i * 32, 0, 32, 48]);
+    }
+    for (var _i = 3; _i >= 0; _i--) {
+      this.sprites.push([this.chopper, _i * 32, 0, 32, 48]);
+    }
     this.chopperFlight();
   }
 
+  // update () {
+  //   // if (counter === (frameSpeed - 1))
+  //   this.currentFrame = (this.currentFrame + 1) % this.chopEndFrame;
+  //     // counter = (counter +  1) % frameSpeed;
+  //   }
+
+
   _createClass(Chopper, [{
-    key: 'update',
-    value: function update() {
-      // if (counter === (frameSpeed - 1))
-      this.currentFrame = (this.currentFrame + 1) % this.chopEndFrame;
-      // counter = (counter +  1) % frameSpeed;
+    key: 'render',
+    value: function render(ctx) {
+      // this.chopper.onload = function() {
+      //   ctx.drawImage(...this.getSprite(), this.posX, this.posY, this.width, this.height);
+      // };
+      var that = this;
+      this.chopper.addEventListener('load', function () {
+        // execute drawImage statements here
+        ctx.drawImage.apply(ctx, _toConsumableArray(that.getSprite()).concat([that.posX, that.posY, that.width, that.height]));
+      }, false);
+      this.chopper.src = './assets/images/helicopter-spritesheet.png';
+      // if (this.spriteIndex > 3) {
+      //   this.spriteIndex = 0;
+      // }
+      // var x = this.spriteIndex % (this.cols - 1) * this.chopFrameWidth;
+      // var y = parseInt(this.spriteIndex / (this.rows - 1)) * this.chopFrameHeight;
+      // // let row = Math.floor(this.currentFrame / this.chopFramesPerRow);
+      // // let col = Math.floor(this.currentFrame % this.chopFramesPerRow);
+      // ctx.drawImage(
+      //   this.chopper,
+      //   x, y,
+      //   this.chopFrameWidth, this.chopFrameHeight, this.XPos, this.YPos,
+      //   this.width, this.height);
+      // this.spriteIndex++;
+      // ctx.drawImage(this.chopper, this.chopper.XPos,
+      //   this.chopper.YPos, this.chopper.width, this.chopper.height);
+      // this.update();
+      this.fly();
+      // ctx.drawImage(...this.getSprite(), this.posX, this.posY, this.width, this.height);
     }
   }, {
-    key: 'render',
-    value: function render(ctx, x, y) {
-      this.update();
-      var row = Math.floor(this.currentFrame / this.chopFramesPerRow);
-      var col = Math.floor(this.currentFrame % this.chopFramesPerRow);
-      ctx.drawImage(this.chopper, col * this.chopFrameWidth, row * this.chopFrameHeight, this.chopFrameWidth, this.chopFrameHeight, this.XPos, this.YPos, 208, 62);
-      this.fly();
+    key: 'getSprite',
+    value: function getSprite() {
+      if (this.counter >= 80) {
+        this.counter = 0;
+      }
+      var result = this.sprites[Math.floor(this.counter / 10)];
+      this.counter++;
+      return result;
     }
 
     //simplify equation with vertical velocity that decreases proportionately

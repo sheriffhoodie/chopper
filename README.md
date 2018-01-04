@@ -32,7 +32,6 @@ The game uses vanilla JavaScript with HTML, CSS, and HTML Canvas for rendering w
 * Create different difficulty modes (easy and hard) that the user can choose from before play
 * Create playlist of shorter tracks that rotate through automatically
 * Add moving/rotating sprites for asteroids and additional types of obstacles
-* In future refactoring, the Howler audio library will be used for audio playback and manipulation
 
 ### Credits
 
