@@ -60,11 +60,59 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var instance = null;
+
+var ImageableSingleton = function ImageableSingleton() {
+  _classCallCheck(this, ImageableSingleton);
+
+  if (!instance) {
+    instance = this;
+
+    // space background
+    this.spaceBackground = new Image();
+    this.spaceBackground.src = './assets/images/space-bkgd.jpg';
+
+    // solar background
+    this.solarBackground = new Image();
+    this.solarBackground.src = './assets/images/sunsurface2.png';
+
+    // chopper
+    this.chopperImg = new Image();
+    this.chopperImg.src = './assets/images/helicopter-spritesheet.png';
+    // this.chopperImg.src = './assets/images/helispritesheet2.png';
+
+    // rock
+    this.rockImg = new Image();
+    this.rockImg.src = './assets/images/asteroid2.png';
+
+    // explosion
+    this.explosionImg = new Image();
+    this.explosionImg.src = './assets/images/explosion-sprite2.png';
+  }
+
+  return instance;
+};
+
+exports.default = ImageableSingleton;
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84,7 +132,7 @@ var _util = __webpack_require__(3);
 
 var Util = _interopRequireWildcard(_util);
 
-var _chopper = __webpack_require__(4);
+var _chopper = __webpack_require__(5);
 
 var _chopper2 = _interopRequireDefault(_chopper);
 
@@ -112,6 +160,8 @@ var Game = function () {
 
     this.canvas = document.querySelector('canvas');
     this.ctx = this.canvas.getContext('2d');
+    // this.canvas2 = document.getElementById('canvas2');
+    // this.ctx2 = this.canvas2.getContext('2d');
     this.canvasHeight = 500;
     this.canvasWidth = 1170;
     this.score = 0;
@@ -360,53 +410,6 @@ var Game = function () {
 exports.default = Game;
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var instance = null;
-
-var ImageableSingleton = function ImageableSingleton() {
-  _classCallCheck(this, ImageableSingleton);
-
-  if (!instance) {
-    instance = this;
-
-    // space background
-    this.spaceBackground = new Image();
-    this.spaceBackground.src = './assets/images/space-bkgd.jpg';
-
-    // solar background
-    this.solarBackground = new Image();
-    this.solarBackground.src = './assets/images/sunsurface2.png';
-
-    // chopper
-    this.chopperImg = new Image();
-    // this.chopperImg.src = './assets/images/helicopter-spritesheet.png';
-
-    // rock
-    this.rockImg = new Image();
-    this.rockImg.src = './assets/images/asteroid2.png';
-
-    // explosion
-    this.explosionImg = new Image();
-    this.explosionImg.src = './assets/images/explosion-sprite2.png';
-  }
-
-  return instance;
-};
-
-exports.default = ImageableSingleton;
-
-/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -483,6 +486,61 @@ var formatScore = exports.formatScore = function formatScore(score) {
 "use strict";
 
 
+var _game = __webpack_require__(1);
+
+var _game2 = _interopRequireDefault(_game);
+
+var _sounds = __webpack_require__(2);
+
+var _sounds2 = _interopRequireDefault(_sounds);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var settings = {
+  muted: true,
+  muteButton: document.querySelector("#mute-button")
+};
+// import {Howl} from 'howler';
+
+_sounds2.default.menuMusic.muted = true;
+_sounds2.default.gameMusic.muted = true;
+_sounds2.default.explosion.muted = true;
+_sounds2.default.menuMusic.loop = true;
+_sounds2.default.gameMusic.currentTime = 11;
+_sounds2.default.gameMusic.loop = true;
+_sounds2.default.gameMusic.volume = 0.8;
+var muteCheck = true;
+_sounds2.default.menuMusic.play();
+
+settings.muteButton.addEventListener('click', function () {
+  settings.muted = !settings.muted;
+  if (event.clientX !== 0) {
+    muteCheck = !muteCheck;
+    _sounds2.default.gameMusic.muted = !_sounds2.default.gameMusic.muted;
+    _sounds2.default.menuMusic.muted = !_sounds2.default.menuMusic.muted;
+    _sounds2.default.explosion.muted = !_sounds2.default.explosion.muted;
+    if (_sounds2.default.gameMusic.muted === true) {
+      localStorage.setItem("gameMusic.muted", "true");
+    } else {
+      localStorage.setItem("gameMusic.muted", "false");
+    }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  var game = new _game2.default();
+  window.onload = function () {
+    game.run();
+  };
+});
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -493,15 +551,13 @@ var _util = __webpack_require__(3);
 
 var Util = _interopRequireWildcard(_util);
 
-var _imageable = __webpack_require__(1);
+var _imageable = __webpack_require__(0);
 
 var _imageable2 = _interopRequireDefault(_imageable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -518,7 +574,10 @@ var Chopper = function () {
     this.chopFrameWidth = 423;
     this.chopFrameHeight = 150;
     this.chopFrameSpeed = 3;
+    this.currentFrame = 0;
     this.chopEndFrame = 3;
+    this.chopFramesPerRow = 1;
+    this.spriteIndex = 0;
     this.crash = false;
     this.flying = false;
     this.startFlyRate = 4;
@@ -526,68 +585,26 @@ var Chopper = function () {
     this.lift = 0.8;
     this.gravity = 1.2;
     this.termVel = 10;
-    this.counter = 0;
-    this.rows = 4;
-    this.cols = 1;
-    this.spriteIndex = 0;
-    this.chopFramesPerRow = Math.floor(this.width / this.chopFrameWidth);
-    this.sprites = [];
-    for (var i = 0; i <= 3; i++) {
-      this.sprites.push([this.chopper, i * 32, 0, 32, 48]);
-    }
-    for (var _i = 3; _i >= 0; _i--) {
-      this.sprites.push([this.chopper, _i * 32, 0, 32, 48]);
-    }
     this.chopperFlight();
   }
 
-  // update () {
-  //   // if (counter === (frameSpeed - 1))
-  //   this.currentFrame = (this.currentFrame + 1) % this.chopEndFrame;
-  //     // counter = (counter +  1) % frameSpeed;
-  //   }
-
-
   _createClass(Chopper, [{
-    key: 'render',
-    value: function render(ctx) {
-      // this.chopper.onload = function() {
-      //   ctx.drawImage(...this.getSprite(), this.posX, this.posY, this.width, this.height);
-      // };
-      var that = this;
-      this.chopper.addEventListener('load', function () {
-        // execute drawImage statements here
-        ctx.drawImage.apply(ctx, _toConsumableArray(that.getSprite()).concat([that.posX, that.posY, that.width, that.height]));
-      }, false);
-      this.chopper.src = './assets/images/helicopter-spritesheet.png';
-      // if (this.spriteIndex > 3) {
-      //   this.spriteIndex = 0;
-      // }
-      // var x = this.spriteIndex % (this.cols - 1) * this.chopFrameWidth;
-      // var y = parseInt(this.spriteIndex / (this.rows - 1)) * this.chopFrameHeight;
-      // // let row = Math.floor(this.currentFrame / this.chopFramesPerRow);
-      // // let col = Math.floor(this.currentFrame % this.chopFramesPerRow);
-      // ctx.drawImage(
-      //   this.chopper,
-      //   x, y,
-      //   this.chopFrameWidth, this.chopFrameHeight, this.XPos, this.YPos,
-      //   this.width, this.height);
-      // this.spriteIndex++;
-      // ctx.drawImage(this.chopper, this.chopper.XPos,
-      //   this.chopper.YPos, this.chopper.width, this.chopper.height);
-      // this.update();
-      this.fly();
-      // ctx.drawImage(...this.getSprite(), this.posX, this.posY, this.width, this.height);
+    key: 'update',
+    value: function update() {
+      this.currentFrame = (this.currentFrame + 1) % this.chopEndFrame;
     }
   }, {
-    key: 'getSprite',
-    value: function getSprite() {
-      if (this.counter >= 80) {
-        this.counter = 0;
+    key: 'render',
+    value: function render(ctx) {
+      if (this.spriteIndex > 3) {
+        this.spriteIndex = 0;
       }
-      var result = this.sprites[Math.floor(this.counter / 10)];
-      this.counter++;
-      return result;
+      this.update();
+      var row = Math.floor(this.currentFrame / this.chopFramesPerRow);
+      var col = Math.floor(this.currentFrame % this.chopFramesPerRow);
+      ctx.drawImage(this.chopper, col * this.chopFrameWidth, row * this.chopFrameHeight, this.chopFrameWidth, this.chopFrameHeight, this.XPos, this.YPos, this.width, this.height);
+      this.spriteIndex++;
+      this.fly();
     }
 
     //simplify equation with vertical velocity that decreases proportionately
@@ -637,61 +654,6 @@ var Chopper = function () {
 exports.default = Chopper;
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _game = __webpack_require__(0);
-
-var _game2 = _interopRequireDefault(_game);
-
-var _sounds = __webpack_require__(2);
-
-var _sounds2 = _interopRequireDefault(_sounds);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var settings = {
-  muted: true,
-  muteButton: document.querySelector("#mute-button")
-};
-// import {Howl} from 'howler';
-
-_sounds2.default.menuMusic.muted = true;
-_sounds2.default.gameMusic.muted = true;
-_sounds2.default.explosion.muted = true;
-_sounds2.default.menuMusic.loop = true;
-_sounds2.default.gameMusic.currentTime = 11;
-_sounds2.default.gameMusic.loop = true;
-_sounds2.default.gameMusic.volume = 0.8;
-var muteCheck = true;
-_sounds2.default.menuMusic.play();
-
-settings.muteButton.addEventListener('click', function () {
-  settings.muted = !settings.muted;
-  if (event.clientX !== 0) {
-    muteCheck = !muteCheck;
-    _sounds2.default.gameMusic.muted = !_sounds2.default.gameMusic.muted;
-    _sounds2.default.menuMusic.muted = !_sounds2.default.menuMusic.muted;
-    _sounds2.default.explosion.muted = !_sounds2.default.explosion.muted;
-    if (_sounds2.default.gameMusic.muted === true) {
-      localStorage.setItem("gameMusic.muted", "true");
-    } else {
-      localStorage.setItem("gameMusic.muted", "false");
-    }
-  }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  var game = new _game2.default();
-  window.onload = function () {
-    game.run();
-  };
-});
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -704,11 +666,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _imageable = __webpack_require__(1);
+var _imageable = __webpack_require__(0);
 
 var _imageable2 = _interopRequireDefault(_imageable);
 
-var _game = __webpack_require__(0);
+var _game = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -759,7 +721,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _imageable = __webpack_require__(1);
+var _imageable = __webpack_require__(0);
 
 var _imageable2 = _interopRequireDefault(_imageable);
 
@@ -828,11 +790,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _imageable = __webpack_require__(1);
+var _imageable = __webpack_require__(0);
 
 var _imageable2 = _interopRequireDefault(_imageable);
 
-var _game = __webpack_require__(0);
+var _game = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

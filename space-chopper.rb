@@ -269,8 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chopperImg.src = "images/helicopter-spritesheet.png";
     // let path = "https://s3.us-east-2.amazonaws.com/chopper-dev/images/helicopter-spritesheet.png";
     let counter = 0;
-    let chopFramesPerRow;
-    chopFramesPerRow = Math.floor(chopperImg.width / chopFrameWidth);
+    let chopFramesPerRow = Math.floor(chopperImg.width / chopFrameWidth);
 
     this.update = function () {
       // if (counter === (frameSpeed - 1))
@@ -279,8 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     this.draw = function (x, y) {
-      // console.log("chopperImg:");
-      // console.log(chopperImg.complete);
       let row = Math.floor(currentFrame / chopFramesPerRow);
       let col = Math.floor(currentFrame % chopFramesPerRow);
       ctx.drawImage(
