@@ -163,7 +163,6 @@ var Game = function () {
     this.canvasHeight = 500;
     this.canvasWidth = 1170;
     this.score = 0;
-    this.highScore = localStorage.getItem("highScore");
     this.chopper = new _chopper2.default();
     this.spacebg = new _background2.default();
     this.explosion = new _explosion2.default();
@@ -288,10 +287,11 @@ var Game = function () {
           this.renderGame();
         }
       }
+      this.highScore = localStorage.getItem("highScore") || 0;
       this.ctx.fillStyle = "white";
       this.ctx.font = "30px Orbitron";
       this.ctx.fillText('Score: ' + Util.formatScore(this.score), 900, 50);
-      this.ctx.fillText('HI: ' + Util.formatScore(localStorage.getItem("highScore")), 969, 80);
+      this.ctx.fillText('HI: ' + Util.formatScore(this.highScore), 969, 80);
       requestAnimationFrame(this.render.bind(this));
     }
   }, {
@@ -564,6 +564,7 @@ settings.muteButton.addEventListener('click', function () {
 document.addEventListener("DOMContentLoaded", function () {
   var game = new _game2.default();
   window.onload = function () {
+    location.reload();
     game.render();
   };
 });
