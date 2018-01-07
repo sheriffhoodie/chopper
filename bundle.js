@@ -476,11 +476,7 @@ Object.defineProperty(exports, "__esModule", {
 var keyboardListeners = exports.keyboardListeners = function keyboardListeners(game) {
   document.addEventListener("keypress", function (event) {
     switch (event.keyCode) {
-      case 13:
-        game.resetGame();
-        break;
       case 32:
-        console.log("space bar");
         event.preventDefault();
         if (game.gameOver !== true) {
           if (game.gameState === "pause") {
@@ -490,6 +486,9 @@ var keyboardListeners = exports.keyboardListeners = function keyboardListeners(g
             game.pause();
           }
         }
+        break;
+      case 13:
+        game.resetGame();
         break;
       default:
         break;
@@ -563,8 +562,10 @@ settings.muteButton.addEventListener('click', function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   var game = new _game2.default();
-  document.onload = function () {
-    game.render();
+  window.onload = function () {
+    setTimeout(function () {
+      game.render();
+    }, 150);
   };
 });
 
