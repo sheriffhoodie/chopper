@@ -563,8 +563,7 @@ settings.muteButton.addEventListener('click', function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   var game = new _game2.default();
-  window.onload = function () {
-    location.reload();
+  document.onload = function () {
     game.render();
   };
 });
