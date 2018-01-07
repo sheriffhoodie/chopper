@@ -218,9 +218,7 @@ var Game = function () {
       this.chopper = new _chopper2.default();
       this.score = 0;
       this.rocks = [];
-      // setTimeout(function () {
       this.showIntro();
-      // }, 30);
       this.showGameEnd = false;
     }
   }, {
@@ -283,7 +281,6 @@ var Game = function () {
       this.ctx.font = "30px Orbitron";
       this.ctx.fillText('Score: ' + Util.formatScore(this.score), 900, 50);
       this.ctx.fillText('HI: ' + Util.formatScore(localStorage.getItem("highScore")), 969, 80);
-      // debugger
       requestAnimationFrame(this.render.bind(this));
     }
   }, {
@@ -355,40 +352,45 @@ var Game = function () {
     value: function difficultyCheck() {
       //move to Level 2
       if (this.score < 50) {
-        _rock2.default.rockVelocity = 4;
-        _rock2.default.rockInterval = 140;
+        this.rock.rockVelocity = 4;
+        this.rock.rockInterval = 140;
       } //Level 3
       if (this.score > 50 && this.score < 100) {
-        _rock2.default.rockVelocity = 5;
-        _rock2.default.rockInterval = 110;
+        this.rock.rockVelocity = 5;
+        this.rock.rockInterval = 110;
+        this.rock.rock.src = './assets/images/spaceship2.png';
       } //Level 4
       if (this.score > 100 && this.score < 200) {
-        _rock2.default.rockVelocity = 6;
-        _rock2.default.rockInterval = 90;
+        this.rock.rockVelocity = 6;
+        this.rock.rockInterval = 90;
+        this.rock.rock.src = './assets/images/Asteroid.png';
       } //Level 5
       if (this.score > 200 && this.score < 320) {
-        _rock2.default.rockVelocity = 8;
-        _rock2.default.rockInterval = 70;
+        this.rock.rockVelocity = 8;
+        this.rock.rockInterval = 70;
+        this.rock.rock.src = './assets/images/asteroid2.png';
       } //Level 6
       if (this.score > 320 && this.score < 410) {
-        _rock2.default.rockVelocity = 10;
-        _rock2.default.rockInterval = 60;
+        this.rock.rockVelocity = 10;
+        this.rock.rockInterval = 60;
       } //Level 7
       if (this.score > 410 && this.score < 550) {
-        _rock2.default.rockVelocity = 12;
-        _rock2.default.rockInterval = 50;
+        this.rock.rockVelocity = 12;
+        this.rock.rockInterval = 50;
+        this.rock.rock.src = './assets/images/spaceship.png';
       } //Level 8
       if (this.score > 550 && this.score < 800) {
-        _rock2.default.rockVelocity = 14;
-        _rock2.default.rockInterval = 40;
+        this.rock.rockVelocity = 14;
+        this.rock.rockInterval = 40;
+        this.rock.rock.src = './assets/images/Asteroid.png';
       } //Level 9
       if (this.score > 800 && this.score < 1000) {
-        _rock2.default.rockVelocity = 16;
-        _rock2.default.rockInterval = 33;
+        this.rock.rockVelocity = 16;
+        this.rock.rockInterval = 33;
       } //Level Hanhee
       if (this.score >= 1001) {
-        _rock2.default.rockVelocity = 18;
-        _rock2.default.rockInterval = 25;
+        this.rock.rockVelocity = 18;
+        this.rock.rockInterval = 25;
       }
     }
   }, {
@@ -400,7 +402,6 @@ var Game = function () {
         this.chopper.chopper.src = "";
         this.showGameEnd = true;
         this.renderGameOver();
-        debugger;
         if (this.score > this.highScore) {
           localStorage.setItem("highScore", this.score);
         }
@@ -445,7 +446,8 @@ Object.defineProperty(exports, "__esModule", {
 var soundFX = {
   explosion: new Audio('./assets/sounds/explosion.flac'),
   menuMusic: new Audio('./assets/sounds/clearside-assimilator.wav'),
-  gameMusic: new Audio('./assets/sounds/space-hiphop-beat2.mp3')
+  // gameMusic: new Audio('./assets/sounds/space-hiphop-beat2.mp3'),
+  gameMusic: new Audio('./assets/sounds/twilight.mp3')
 };
 
 exports.default = soundFX;
@@ -463,7 +465,12 @@ Object.defineProperty(exports, "__esModule", {
 var keyboardListeners = exports.keyboardListeners = function keyboardListeners(game) {
   document.addEventListener("keypress", function (event) {
     switch (event.keyCode) {
+      case 82:
+        console.log("trying to reset");
+        game.resetGame();
+        break;
       case 32:
+        console.log("space bar");
         event.preventDefault();
         if (game.gameOver !== true) {
           if (game.gameState === "pause") {
@@ -473,10 +480,6 @@ var keyboardListeners = exports.keyboardListeners = function keyboardListeners(g
             game.pause();
           }
         }
-        break;
-      case 82:
-        console.log("trying to reset");
-        game.resetGame();
         break;
       default:
         break;
