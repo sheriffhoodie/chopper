@@ -172,7 +172,6 @@ var Game = function () {
     this.showGameEnd = false;
     this.gameOver = false;
     this.rocks = [];
-    this.currentFrame = 0;
     this.highScore = 0;
     this.gameState = "pause";
     this.showIntro();
@@ -214,12 +213,24 @@ var Game = function () {
   }, {
     key: 'resetGame',
     value: function resetGame() {
-      this.clear();
-      this.chopper = new _chopper2.default();
-      this.score = 0;
-      this.rocks = [];
-      this.showIntro();
-      this.showGameEnd = false;
+      location.reload();
+      // this.clearScreen();
+      // this.chopper = new Chopper ();
+      // this.rock = new Rock ();
+      // this.spacebg = new spaceBackground ();
+      // this.explosion = new Explosion ();
+      // this.pauseTotal = 0;
+      // this.pauseStart = undefined;
+      // this.startTime = undefined;
+      // this.endTime = undefined;
+      // this.elapsedTime = undefined;
+      // this.score = 0;
+      // this.rocks = [];
+      // this.showGameEnd = false;
+      // this.gameOver = false;
+      // this.play();
+      // this.render();
+      // this.addRock();
     }
   }, {
     key: 'clearScreen',
@@ -363,7 +374,7 @@ var Game = function () {
       if (this.score > 100 && this.score < 200) {
         this.rock.rockVelocity = 6;
         this.rock.rockInterval = 90;
-        this.rock.rock.src = './assets/images/Asteroid.png';
+        this.rock.rock.src = './assets/images/asteroid3.png';
       } //Level 5
       if (this.score > 200 && this.score < 320) {
         this.rock.rockVelocity = 8;
@@ -382,7 +393,7 @@ var Game = function () {
       if (this.score > 550 && this.score < 800) {
         this.rock.rockVelocity = 14;
         this.rock.rockInterval = 40;
-        this.rock.rock.src = './assets/images/Asteroid.png';
+        this.rock.rock.src = './assets/images/asteroid3.png';
       } //Level 9
       if (this.score > 800 && this.score < 1000) {
         this.rock.rockVelocity = 16;
@@ -422,7 +433,7 @@ var Game = function () {
       this.ctx.fillText('Your Score: ' + this.score, 482, 290);
       this.ctx.fillStyle = "white";
       this.ctx.font = '30px Orbitron';
-      this.ctx.fillText('press Cmd + R to restart', 408, 350);
+      this.ctx.fillText('press Enter to restart', 423, 350);
     }
   }]);
 
@@ -465,8 +476,7 @@ Object.defineProperty(exports, "__esModule", {
 var keyboardListeners = exports.keyboardListeners = function keyboardListeners(game) {
   document.addEventListener("keypress", function (event) {
     switch (event.keyCode) {
-      case 82:
-        console.log("trying to reset");
+      case 13:
         game.resetGame();
         break;
       case 32:
