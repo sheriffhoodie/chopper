@@ -456,9 +456,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var soundFX = {
   explosion: new Audio('./assets/sounds/explosion.flac'),
-  menuMusic: new Audio('./assets/sounds/clearside-assimilator.wav'),
+  menuMusic: new Audio('./assets/sounds/twilight.mp3'),
   // gameMusic: new Audio('./assets/sounds/space-hiphop-beat2.mp3'),
-  gameMusic: new Audio('./assets/sounds/twilight.mp3')
+  gameMusic: new Audio('./assets/sounds/space-hiphop-beat1.mp3')
 };
 
 exports.default = soundFX;
