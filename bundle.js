@@ -160,12 +160,10 @@ var Game = function () {
 
     this.canvas = document.querySelector('canvas');
     this.ctx = this.canvas.getContext('2d');
-    // this.canvas2 = document.getElementById('canvas2');
-    // this.ctx2 = this.canvas2.getContext('2d');
     this.canvasHeight = 500;
     this.canvasWidth = 1170;
     this.score = 0;
-    this.highScore = localStorage.getItem("highScore") || 0;
+    this.highScore = localStorage.getItem("highScore");
     this.chopper = new _chopper2.default();
     this.spacebg = new _background2.default();
     this.explosion = new _explosion2.default();
@@ -214,11 +212,6 @@ var Game = function () {
       }
     }
   }, {
-    key: 'run',
-    value: function run() {
-      this.render();
-    }
-  }, {
     key: 'resetGame',
     value: function resetGame() {
       this.clear();
@@ -248,13 +241,9 @@ var Game = function () {
       var spacebg = new Image();
       var solarbg = new Image();
       var that = this;
-      // spacebg.addEventListener('load', function () {
-      //   that.ctx.drawImage(spacebg, 0, 0, that.spacebg.width, that.spacebg.height);
-      // });
       solarbg.addEventListener('load', function () {
         that.ctx.drawImage(solarbg, 0, that.canvas.height - 200, 1312, 200);
       }, false);
-      spacebg.src = './assets/images/space-bkgd.jpg';
       solarbg.src = './assets/images/sunsurface2.png';
       this.ctx.font = '36px Orbitron';
       this.ctx.fillStyle = 'gray';
@@ -293,7 +282,8 @@ var Game = function () {
       this.ctx.fillStyle = "white";
       this.ctx.font = "30px Orbitron";
       this.ctx.fillText('Score: ' + Util.formatScore(this.score), 900, 50);
-      this.ctx.fillText('HI: ' + Util.formatScore(this.highScore), 969, 80);
+      this.ctx.fillText('HI: ' + Util.formatScore(localStorage.getItem("highScore")), 969, 80);
+      // debugger
       requestAnimationFrame(this.render.bind(this));
     }
   }, {
@@ -410,13 +400,14 @@ var Game = function () {
         this.chopper.chopper.src = "";
         this.showGameEnd = true;
         this.renderGameOver();
+        debugger;
+        if (this.score > this.highScore) {
+          localStorage.setItem("highScore", this.score);
+        }
         var that = this;
         setTimeout(function () {
           that.pause();
         }, 150);
-      }
-      if (this.score > this.highScore) {
-        localStorage.setItem("highScore", this.score);
       }
     }
   }, {
@@ -560,7 +551,7 @@ settings.muteButton.addEventListener('click', function () {
 document.addEventListener("DOMContentLoaded", function () {
   var game = new _game2.default();
   window.onload = function () {
-    game.run();
+    game.render();
   };
 });
 
