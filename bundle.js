@@ -182,7 +182,7 @@ var Game = function () {
     var that = this;
     setTimeout(function () {
       that.showIntro();
-    }, 100);
+    }, 200);
     this.addRock();
   }
 
@@ -249,7 +249,6 @@ var Game = function () {
   }, {
     key: 'showIntro',
     value: function showIntro() {
-      var spacebg = new Image();
       var solarbg = new Image();
       var that = this;
       solarbg.addEventListener('load', function () {
@@ -401,7 +400,7 @@ var Game = function () {
       if (this.score > 800 && this.score < 1000) {
         this.rock.rockVelocity = 16;
         this.rock.rockInterval = 33;
-      } //Level Hanhee
+      } //Level 10
       if (this.score >= 1001) {
         this.rock.rockVelocity = 18;
         this.rock.rockInterval = 25;
