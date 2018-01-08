@@ -95,7 +95,6 @@ var ImageableSingleton = function ImageableSingleton() {
     // chopper
     this.chopperImg = new Image();
     this.chopperImg.src = './assets/images/helicopter-spritesheet.png';
-    // this.chopperImg.src = './assets/images/helispritesheet2.png';
 
     // rock
     this.rockImg = new Image();
@@ -442,7 +441,6 @@ exports.default = Game;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-// import {Howl} from 'howler';
 
 var soundFX = {
   explosion: new Audio('./assets/sounds/explosion.flac'),
@@ -523,7 +521,6 @@ var settings = {
   muted: true,
   muteButton: document.querySelector("#mute-button")
 };
-// import {Howl} from 'howler';
 
 _sounds2.default.menuMusic.muted = true;
 _sounds2.default.gameMusic.muted = true;
@@ -629,10 +626,6 @@ var Chopper = function () {
       this.spriteIndex++;
       this.fly();
     }
-
-    //simplify equation with vertical velocity that decreases proportionately
-    //and then increases upward velocity with accelaration, curving the flying
-
   }, {
     key: 'fly',
     value: function fly() {
@@ -813,19 +806,6 @@ var spaceBackground = function () {
       ctx.drawImage(this.spaceBkgd, -this.spaceScrollX, 0, this.width, this.height);
       ctx.drawImage(this.spaceBkgd, this.width - this.spaceScrollX, 0, this.width, this.height);
     }
-
-    // drawSolarBackground () {
-    //   solarBackground.src = "images/sunsurface2.png";
-    //   if (solarScrollX >= canvas.width) {
-    //     solarScrollX = 0;
-    //   }
-    //   solarScrollX += solarBgVelocity;
-    //   this.ctx.drawImage(
-    // solarBackground, -solarScrollX, 0, solarBgWidth, solarBgHeight);
-    //   this.ctx.drawImage(solarBackground, canvas.width - solarScrollX,
-    // canvas.height - solarBgHeight, solarBgWidth, solarBgHeight);
-    // }
-
   }]);
 
   return spaceBackground;
