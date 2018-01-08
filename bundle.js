@@ -173,13 +173,16 @@ var Game = function () {
     this.rocks = [];
     this.highScore = 0;
     this.gameState = "pause";
-    this.showIntro();
     this.pauseTotal = 0;
     this.pauseStart = undefined;
     this.startTime = undefined;
     this.endTime = undefined;
     this.elapsedTime = undefined;
     Util.keyboardListeners(this);
+    var that = this;
+    setTimeout(function () {
+      that.showIntro();
+    }, 100);
     this.addRock();
   }
 

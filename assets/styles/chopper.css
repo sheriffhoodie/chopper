@@ -10,6 +10,11 @@ h2 {
   margin: 0;
 }
 
+@font-face {
+  font-family: 'Orbitron';
+  src: url('./Orbitron/Orbitron-Regular.ttf') format("truetype");
+}
+
 .game-title {
   margin-top: 0;
   margin-bottom: 10px;
