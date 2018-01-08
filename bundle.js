@@ -178,6 +178,11 @@ var Game = function () {
     this.startTime = undefined;
     this.endTime = undefined;
     this.elapsedTime = undefined;
+    if (localStorage.getItem("gameMusic.muted") === "false") {
+      _sounds2.default.gameMusic.muted = false;
+      _sounds2.default.menuMusic.muted = false;
+      _sounds2.default.explosion.muted = false;
+    }
     Util.keyboardListeners(this);
     var that = this;
     setTimeout(function () {
@@ -216,23 +221,6 @@ var Game = function () {
     key: 'resetGame',
     value: function resetGame() {
       location.reload();
-      // this.clearScreen();
-      // this.chopper = new Chopper ();
-      // this.rock = new Rock ();
-      // this.spacebg = new spaceBackground ();
-      // this.explosion = new Explosion ();
-      // this.pauseTotal = 0;
-      // this.pauseStart = undefined;
-      // this.startTime = undefined;
-      // this.endTime = undefined;
-      // this.elapsedTime = undefined;
-      // this.score = 0;
-      // this.rocks = [];
-      // this.showGameEnd = false;
-      // this.gameOver = false;
-      // this.play();
-      // this.render();
-      // this.addRock();
     }
   }, {
     key: 'clearScreen',
@@ -543,14 +531,12 @@ _sounds2.default.explosion.muted = true;
 _sounds2.default.menuMusic.loop = true;
 _sounds2.default.gameMusic.currentTime = 11;
 _sounds2.default.gameMusic.loop = true;
-_sounds2.default.gameMusic.volume = 0.8;
-var muteCheck = true;
+_sounds2.default.gameMusic.volume = 0.9;
 _sounds2.default.menuMusic.play();
 
 settings.muteButton.addEventListener('click', function () {
   settings.muted = !settings.muted;
   if (event.clientX !== 0) {
-    muteCheck = !muteCheck;
     _sounds2.default.gameMusic.muted = !_sounds2.default.gameMusic.muted;
     _sounds2.default.menuMusic.muted = !_sounds2.default.menuMusic.muted;
     _sounds2.default.explosion.muted = !_sounds2.default.explosion.muted;
