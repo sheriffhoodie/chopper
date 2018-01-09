@@ -7,7 +7,7 @@
 
 ### Background & Instructions
 
-Space Chopper is a 2D side-scrolling spinoff version of the classic Helicopter arcade game for 1 Player involving keeping a constantly falling helicopter hovering and dodging oncoming obstacles that appear randomly. The player simply uses the "F" key to engage the flight: pressing and holding down will cause the helicopter to steadily ascend while lightly tapping at regular intervals will keep it hovering at the same altitude and letting it go will cause the helicopter to lose altitude.
+Space Chopper is a 2D side-scrolling spinoff version of the classic Helicopter arcade game for one player involving keeping a constantly falling helicopter hovering and dodging oncoming obstacles that appear randomly. The player simply uses the "F" key to fly the chopper: pressing and holding down will cause the helicopter to steadily ascend while lightly tapping at regular intervals will keep it hovering at the same altitude and letting it go will cause the helicopter to lose altitude.
 
 There is no "end" to the game, your distance is tracked as you fly forward and is given to you as your score when you crash the chopper into an obstacle or the top or bottom edges of the screen. Once the game is over after a crash, users can restart the game with the Enter key.
 
@@ -25,7 +25,7 @@ In the game, users can:
 
 ### Architecture and Technologies
 
-The game uses vanilla JavaScript with HTML, CSS, and HTML Canvas for rendering with HTML5 Audio for sound effects and background music interface / playback. The game's functionality is categorically split into separate files OOP-style, e.g. Rock.js, Chopper.js, Sounds.js, etc., for easy navigation and organization. In addition, the game employs the ES6 Singleton module for caching images and sprites.
+The game uses vanilla JavaScript with HTML, CSS, and HTML Canvas for rendering with HTML5 Audio for sound effects and background music interface / playback. The game's functionality is categorically split into separate files OOP-style, e.g. Rock.js, Chopper.js, Sounds.js, etc., for easy navigation and organization. In addition, the game employs the ES6 Singleton module for caching images and sprites and the obstacle images are preloaded as a head script to avoid loading delays.
 
 ### Future Directions
 
@@ -37,6 +37,7 @@ The game uses vanilla JavaScript with HTML, CSS, and HTML Canvas for rendering w
 ### Credits
 
 * Music: 'Heliscope' by Jesse James,
-       'OuterSpace HipHop Beat' by Cyrov Instrumental
+       'OuterSpace HipHop Beat' by Cyrov Instrumental,
+       'Twilight' by DJ Aphrodite
 * Explosion Sound Effect: https://opengameart.org/content/big-explosion
 * Explosion Sprite: https://opengameart.org/content/explosion
