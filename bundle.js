@@ -786,25 +786,22 @@ var spaceBackground = function () {
     var images = new _imageable2.default();
     this.spaceBkgd = images.spaceBackground;
     this.height = 500;
-    this.width = 1170;
-    this.spaceBgVelocity = 10;
-    this.spaceScrollX = 0;
-    this.solarBgHeight = 220;
-    this.solarBgWidth = 1112;
-    this.solarBgVelocity = 12;
-    this.solarScrollX = 0;
+    this.width = 2000;
+    this.velocity = 10;
+    this.XPos = 0;
+    this.counter = 0;
   }
 
   _createClass(spaceBackground, [{
     key: 'render',
     value: function render(ctx) {
-      if (this.spaceScrollX >= this.width) {
-        this.spaceScrollX = 0;
+      if (this.XPos >= this.width) {
+        this.XPos = 0;
       }
-      this.spaceScrollX += this.spaceBgVelocity;
+      this.XPos += this.velocity;
 
-      ctx.drawImage(this.spaceBkgd, -this.spaceScrollX, 0, this.width, this.height);
-      ctx.drawImage(this.spaceBkgd, this.width - this.spaceScrollX, 0, this.width, this.height);
+      ctx.drawImage(this.spaceBkgd, -this.XPos, 0, this.width, this.height);
+      ctx.drawImage(this.spaceBkgd, this.width - this.XPos, 0, this.width, this.height);
     }
   }]);
 
